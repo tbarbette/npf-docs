@@ -74,16 +74,6 @@ only when the first one has finished and displayed the "finished" event.
 List of variables that will be replaced in any script or file section
 (searching for pattern $VARIABLE or ${VARIABLE}).
 
-A variable can describe multiple values to try: - LENGTH=60 Single value
-- LENGTH=[60+1024] All values between 60 and 1024, included -
-LENGTH=[64\*1024] All values starting from 64 multiplied per 2 up to
-1024 - LENGTH={60,64,128,256,1024,1496} A list of values -
-LENGTH=EXPAND(Hello
-$VARIABLE) will generate one string "Hello ..." for each value of the previously defined variable. For instance if VARIABLE=[1-10] then LENGTH will be equal to {Hello 1,Hello 2, ..., Hello 10}  - LENGTH=RANDOM(A,B) Generate a pseudo-random number between A and B, that can be previously defined variables. It's pseudo-random so for the same run the value will be the same, and when re-executing the test the value will be the same accross execution  - LENGTH=HEAD(A,$VARIABLE[,JOIN])
-Takes the first A (A can be a previously define variable itself) values
-of \$VARIABLES and joins them - LENGTH=IF(COND,A,B) Evaluates COND, and
-return A if COND is true or B if it isn't
-
     %variables
     NUMBER=[1-10]
 
@@ -108,7 +98,9 @@ $CPU will be expanded by 0 and 1  - -cpu:CPU=1    If the tag cpu is not given, $
 will be expanded by 1
 
 This allows to do more extanded tests to grid-search some value, but do
-not include that in regression test
+not include that in regression test.
+
+All variables types and discussion about experimental design can be found in :ref:`variables`
 
 ### Config
 
