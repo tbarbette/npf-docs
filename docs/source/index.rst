@@ -1,22 +1,45 @@
-Welcome to Lumache's documentation!
-===================================
+Network Performance Framework (NPF) documentation
+=================================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+Run performance tests on network software by running snippets of bash scripts on a cluster
+following a simple definition file. For instance, the following configuration to test iPerf3 performance (omitting graph styling options):
 
-Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
+.. code-block::
+   %info
+   IPerf3 Throughput Experiment
 
-.. note::
+   %variables
+   PARALLEL=[1-8]
+   ZEROCOPY={:without,-Z:with}
 
-   This project is under active development.
+   %script@server
+   iperf3 -s &> /dev/null
 
-Contents
---------
+   %script@client delay=1
+   result=$(iperf3 -f k -t 2 -P $PARALLEL $ZEROCOPY -c ${server:0:ip} | tail -n 3 | grep -ioE "[0-9.]+ [kmg]bits")
+   echo "RESULT-THROUGHPUT $result"
 
-.. toctree::
+Will automatically produce the following graph:
 
-   usage
-   api
+.. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/01-iperf-THROUGHPUT.png
+   :width: 400
+   :alt: Result for tests/tcp/01-iperf.np
+
+When launching npf:
+
+.. code-block::
+   npf-run --test tests/tcp/01-iperf.npf
+
+Test files allow to define a matrix of parameters to try many combinations of
+variables (see [here](tests/README.npf#variables) for a description of the possible definitions such as values, ranges, ...) for each test and report performance results and evolution for each combination of variables.
+
+Finally, a graph will be built and statistical results may be computed for each test 
+showing the difference between variables values, different softwares, or the evolution of
+performances through commits.
+
+Test files are simple to write, and easy to share, as such we encourage
+users to share their ".npf" scripts with their code to allow other users to reproduce
+their results, and graphs.
+
+NPF supports running the given test across a custer, allowing to try your tests
+in multiple different configuration very quickly and on serious hardware.
