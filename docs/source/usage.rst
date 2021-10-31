@@ -40,6 +40,7 @@ The big picture
 ===============
 
 .. code-block::
+
    %info
    IPerf3 Throughput Experiment
 
