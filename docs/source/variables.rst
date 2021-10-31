@@ -95,3 +95,7 @@ In the following exemple, a "X={0,1}" variable is defined, and many other variab
 .. image:: https://github.com/tbarbette/npf/raw/master/integration/experimental.png
   :width: 400
   :alt: Exemple of aggregated results in an other variable
+  
+.. note::
+
+ TODO: Display this graph as a CDF
