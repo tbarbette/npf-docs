@@ -1,9 +1,4 @@
-Template for the Read the Docs tutorial
-=======================================
+NPF Documentation repository for readthedocs
+============================================
 
-This GitHub template includes fictional Python library
-with some basic Sphinx docs.
-
-Read the tutorial here:
-
-https://docs.readthedocs.io/en/stable/tutorial/
+The documentation can be viewed at https://npf.readthedocs.io/en/latest/
