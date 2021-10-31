@@ -4,8 +4,8 @@ Usage
 
 .. _installation:
 
-Installation
-============
+Install
+=======
 
 To use NPF, first install it using pip:
 
@@ -53,7 +53,6 @@ The big picture
    %script@client delay=1
    result=$(iperf3 -f k -t 2 -P $PARALLEL $ZEROCOPY -c ${server:0:ip} | tail -n 3 | grep -ioE "[0-9.]+ [kmg]bits")
    echo "RESULT-THROUGHPUT $result"
-
 
 Your *.npf* test file is composed of a serie of sections, as in the example given above. The sections describe the scripts to run, where to run them, what variables should be tested, what are their ranges, configuration parameters such as timeout or graph colors, etc. Each section is described in more details in :ref:`tests`. 
 When launching NPF, you will also give the name of one or more *repositories*, which are files located in the `repo` folder describing software to download, install and compile so everything is in place when your experiment is launched. They follow a format descrived in :ref:`repos`.
