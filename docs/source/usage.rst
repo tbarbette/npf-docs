@@ -28,7 +28,7 @@ Cluster-based tests use SSH to launch multiple software on different nodes, ther
 
 sudo (optional)
 ---------------
-Most DPDK-based but also other scripts use the `sudo=true` parameter in test scripts to gain root access. You can either always connect as root to other servers (see the [cluster section](#user-content-cluster) below) or set up password-less sudo on all nodes.
+Most DPDK-based but also other scripts use the `sudo=true` parameter in test scripts to gain root access. You can either always connect as root to other servers (see the :ref:`cluster` section) or set up password-less sudo on all nodes.
 
 File-sharing (optional)
 -----------------------
