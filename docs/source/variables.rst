@@ -25,7 +25,10 @@ echo "RESULT-ADDITION $ADD"
 echo "RESULT-MULT $MULT"
 ```
 The example above will re-execute the test (script) for all "NUMBER" from 1 to 10. The following graphs will be automatically produced:
-![sample picture](examples/tests-readme-ADDITION.png "Result for ADDITION")![sample picture](examples/tests-readme-MULT.png "Result for MULT"). See [the main README](../README.md#graphing-options) to style the graph and change units, axis names, etc...
+![sample picture](examples/tests-readme-ADDITION.png "Result for ADDITION")
+![sample picture](examples/tests-readme-MULT.png "Result for MULT").
+
+See [the main README](../README.md#graphing-options) to style the graph and change units, axis names, etc...
 
 
 Variables can optionaly be prefixed with a tag and a colon to be included only
@@ -87,7 +90,8 @@ option var_aggregate now accepts lists:
 All points will be combined as a single run and will just be considered
 as "variance" of the other variables.
 
-In the following exemple, a "X={0,1}" variable is defined, and many other variables that are aggregated using `var_aggregated` as defined above. This is generated from the script [integration/exeperimental.npf](https://github.com/tbarbette/npf/blob/master/integration/experimental.npf)
+In the following exemple, a "X={0,1}" variable is defined, and many other variables that are aggregated using *var_aggregated* as defined above. This is generated from the script `integration/exeperimental.npf <https://github.com/tbarbette/npf/blob/master/integration/experimental.npf>`__
+
 .. image:: https://github.com/tbarbette/npf/raw/master/integration/experimental.png
   :width: 400
   :alt: Exemple of aggregated results in an other variable
