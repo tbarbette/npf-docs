@@ -57,4 +57,5 @@ Contents
 .. toctree::
 
    usage
+   variables
    api
