@@ -5,6 +5,7 @@ Run performance tests on network software by running snippets of bash scripts on
 following a simple definition file. For instance, the following configuration to test iPerf3 performance (omitting graph styling options):
 
 .. code-block::
+
    %info
    IPerf3 Throughput Experiment
 
@@ -28,10 +29,11 @@ Will automatically produce the following graph:
 When launching npf:
 
 .. code-block::
+
    npf-run --test tests/tcp/01-iperf.npf
 
 Test files allow to define a matrix of parameters to try many combinations of
-variables (see [here](tests/README.npf#variables) for a description of the possible definitions such as values, ranges, ...) for each test and report performance results and evolution for each combination of variables.
+variables (see :ref:`variables` for a description of the possible definitions such as values, ranges, ...) for each test and report performance results and evolution for each combination of variables.
 
 Finally, a graph will be built and statistical results may be computed for each test 
 showing the difference between variables values, different softwares, or the evolution of
@@ -57,5 +59,6 @@ Contents
 .. toctree::
 
    usage
+   tests
    variables
    api
