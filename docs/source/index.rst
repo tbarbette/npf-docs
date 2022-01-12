@@ -57,8 +57,8 @@ Contents
 --------
 
 .. toctree::
-
    usage
    tests
    variables
-   api
+   graph
+   cluster

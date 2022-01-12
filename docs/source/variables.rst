@@ -1,7 +1,9 @@
+.. _variables:
 
 =========
 Variables
 =========
+
 In the `variables` section, or through the `--variables`, one can list variables that will be replaced in any script or file section (searching for pattern $VARIABLE or ${VARIABLE}).
 
 A variable can describe its values to take using multiple schemes:
@@ -14,27 +16,27 @@ A variable can describe its values to take using multiple schemes:
  - LENGTH=HEAD(A,$VARIABLE[,JOIN]) Takes the first A (A can be a previously define variable itself) values of $VARIABLES and joins them
  - LENGTH=IF(COND,A,B) Evaluates COND, and return A if COND is true or B if it isn't 
 
-```
-%variables
-NUMBER=[1-10]
+.. code-block::text
+    %variables
+    NUMBER=[1-10]
 
-%script
-ADD=$(echo "$NUMBER + $NUMBER" | bc)
-MULT=$(echo "$NUMBER * $NUMBER" | bc)
-echo "RESULT-ADDITION $ADD"
-echo "RESULT-MULT $MULT"
-```
+    %script
+    ADD=$(echo "$NUMBER + $NUMBER" | bc)
+    MULT=$(echo "$NUMBER * $NUMBER" | bc)
+    echo "RESULT-ADDITION $ADD"
+    echo "RESULT-MULT $MULT"
+
 The example above will re-execute the test (script) for all "NUMBER" from 1 to 10. The following graphs will be automatically produced:
 ![sample picture](examples/tests-readme-ADDITION.png "Result for ADDITION")
 ![sample picture](examples/tests-readme-MULT.png "Result for MULT").
 
-See [the main README](../README.md#graphing-options) to style the graph and change units, axis names, etc...
-
+See the :ref:`graphing page<graphing>` to style the graph and change units, axis names, etc...
 
 Variables can optionaly be prefixed with a tag and a colon to be included only
 if a tag is given (by the repo, or the command line argument):
+
  - cpu:CPU={0,1} If the tag cpu is given, $CPU will be expanded by 0 and 1
- - -cpu:CPU=1    If the tag cpu is not given, $CPU will be expanded by 1
+ - cpu:CPU=1    If the tag cpu is not given, $CPU will be expanded by 1
 
 This allows to do more extanded tests to grid-search some value, but do not include that in regression test
 

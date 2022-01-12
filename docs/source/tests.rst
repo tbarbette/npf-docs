@@ -1,8 +1,9 @@
+============================
 Writing a *.npf* test script
 ============================
 
 Sections
---------
+========
 
 The test script is made of multiple sections, starting with a % like
 "%file CONFIG" which means that a file named CONFIG should be created
@@ -20,7 +21,8 @@ List of sections :
     * require : A special script that tells if the test script can run. If any line produce a return code different than 0, the test script will not run
     * pyexit : A python script that will be executed after each tests (but only once after all runs), mainly to change or interpret the results
 
-### Script
+Script
+------
 
 The script is the heart of NPF. A script section defines a simple list
 of bash commands to be executed.
@@ -66,7 +68,8 @@ when it finishes, and will start after a delay of 5 seconds. The second
 script will run on "server", with elevated priviledges. But it will run
 only when the first one has finished and displayed the "finished" event.
 
-### Variables
+Variables
+---------
 
 List of variables that will be replaced in any script or file section
 (searching for pattern $VARIABLE or ${VARIABLE}).
@@ -99,20 +102,20 @@ will be expanded by 1
 This allows to do more extanded tests to grid-search some value, but do
 not include that in regression test.
 
-All variables types and discussion about experimental design can be found in :ref:`variables`
+All variables types and discussion about experimental design can be found in :ref:`the variables page <variables:variables>`
 
-### Config
+Config
+------
 
 List of test configuration option not related to graphing (those ones
-are described [in the main README](../README.md#graphing-options). -
-acceptable=0.01 Acceptable difference between multiple regression runs -
-n\_runs=1 Number of runs to do of each test - unacceptable\_n\_runs=0
-Number of runs to do when the value is first rejected (to avoid false
-positives). Half the most abnormal runs will be rejected to have a most
-common value average. - required\_tags= Comma-separated list of tags
-needed to run this run
+are described `:ref:in the graphing options<graphing-options>`.
+    - acceptable=0.01 Acceptable difference between multiple regression runs 
+    - n\_runs=1 Number of runs to do of each test
+    - - unacceptable\_n\_runs=0 Number of runs to do when the value is first rejected (to avoid false positives). Half the most abnormal runs will be rejected to have a most common value average.
+    - required\_tags= Comma-separated list of tags needed to run this run
 
-### pyexit
+pyexit
+------
 
 NPF will extract all results prefixed by *RESULT[-VARNAME]*. If VARNAME
 is in result\_add={...} config list, occurences of the same VARNAME will
@@ -121,6 +124,7 @@ will be append as a list, else the VARNAME will overwrite each others.
 
 To do more, one can use the %pyexit section to interpret the results :
 
+.. code-block::
     %pyexit
     import numpy as np
     loss=RESULTS["RX"] - RESULTS["TX"]
@@ -130,15 +134,14 @@ Any python code will be accepted, so one may compute variance among
 multiple results, etc. Kind results are available under KIND\_RESULTS.
 
 Constants
----------
+=========
 
 Multiple constants can be used in the files and scripts sections: 
-    - NPF\_ROOT : Path to NPF - NPF\_BUILD\_PATH: Path to the build folder of
-NPF 
+    - NPF\_ROOT : Path to NPF
+    - NPF\_BUILD\_PATH: Path to the build folder of NPF 
     - NPF\_REPO: Path to the repository under test
     - NPF\_testscript\_PATH: Path to the location of the test script path
-    - NPF\_RESULT\_PATH: Path to the result folder (by default when the
-command is run, or as passed by the --result-path option)
+    - NPF\_RESULT\_PATH: Path to the result folder (by default when the command is run, or as passed by the --result-path option)
     - NPF\_OUTPUT\_PATH: Path to the output folder (by default as result,unless given with --output-filename)
     - NPF\_NODE\_ID: Index of the node used for the same role, in general 1
     - NPF\_NODE\_MAX: Number of nodesrunning the same role, in general 1
@@ -146,9 +149,10 @@ command is run, or as passed by the --result-path option)
     - NPF\_MULTI\_MAX: Number of multi as given to the cluster config (default is 1)
 
 test scripts shipped with NPF
------------------------------
+=============================
 
-### Generic
+Generic
+------
 
 Generic tests are used to do black-box testing, they are L2/L3
 generators, packets trace replay and HTTP generators.

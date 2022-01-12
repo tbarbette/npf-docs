@@ -9,6 +9,8 @@ author = 'Barbette'
 release = '1.0'
 version = '1.0.18'
 
+autosectionlabel_prefix_document = True
+
 # -- General configuration
 
 extensions = [
@@ -16,6 +18,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
+    'sphinx.ext.autosectionlabel',
     'sphinx.ext.intersphinx',
 ]
 
