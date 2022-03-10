@@ -1,7 +1,8 @@
-.. tests:
-============================
+.. _tests:
+
+****************************
 Writing a *.npf* test script
-============================
+****************************
 
 Sections
 ========
@@ -109,11 +110,11 @@ Config
 ------
 
 List of test configuration option not related to graphing (those ones
-are described `:ref:in the graphing options<graphing-options>`.
-    - acceptable=0.01 Acceptable difference between multiple regression runs 
-    - n\_runs=1 Number of runs to do of each test
-    - - unacceptable\_n\_runs=0 Number of runs to do when the value is first rejected (to avoid false positives). Half the most abnormal runs will be rejected to have a most common value average.
-    - required\_tags= Comma-separated list of tags needed to run this run
+are described `:ref:in the graphing options<graphing-options>`):
+- acceptable=0.01 Acceptable difference between multiple regression runs
+- n\_runs=1 Number of runs to do of each test
+- unacceptable\_n\_runs=0 Number of runs to do when the value is first rejected (to avoid false positives). Half the most abnormal runs will be rejected to have a most common value average.
+- required\_tags= Comma-separated list of tags needed to run this run
 
 pyexit
 ------

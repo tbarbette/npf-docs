@@ -1,7 +1,8 @@
-.. usage:
-=====
+.. _usage:
+
+*****
 Usage
-=====
+*****
 
 .. _installation:
 
