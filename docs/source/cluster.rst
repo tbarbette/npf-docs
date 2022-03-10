@@ -15,6 +15,7 @@ Note : all communication is done through SSH. You should have passwordless conne
 For instance, using `--cluster client=user01@server01.network.edu` is the same than using `--cluster client=server01` with the following `server01.node` file:
 
 .. code-block::
+
     addr=server01.network.edu
     user=user01
 

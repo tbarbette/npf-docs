@@ -29,7 +29,7 @@ Script
 The script is the heart of NPF. A script section defines a simple list
 of bash commands to be executed.
 
-.. code-block::
+.. code-block:: bash
 
     %script
     TOTAL=$(bc 5 + 3)
@@ -41,7 +41,7 @@ times to observe the variance.
 
 There can be multiple RESULT:
 
-.. code-block::
+.. code-block:: bash
 
     %script
     ADD=$(bc 5 + 3)
@@ -55,7 +55,7 @@ value of ADDITION is 8 and the DIFFERENCE is 2.
 Finally, scripts can take some parameters and can be required to be
 executed on a specific machine (roles):
 
-.. code-block::
+.. code-block:: bash
 
     %script@client autokill=false delay=5
     echo "EVENT finished"
@@ -76,7 +76,7 @@ Variables
 List of variables that will be replaced in any script or file section
 (searching for pattern $VARIABLE or ${VARIABLE}).
 
-.. code-block::
+.. code-block:: bash
 
     %variables
     NUMBER=[1-10]
@@ -91,8 +91,7 @@ The example above will re-execute the test (script) for all "NUMBER"
 from 1 to 10. The following graphs will be automatically produced:
 ![sample
 picture](examples/tests-readme-ADDITION.png "Result for ADDITION")![sample
-picture](examples/tests-readme-MULT.png "Result for MULT"). See [the
-main README](../README.md#graphing-options) to style the graph and
+picture](examples/tests-readme-MULT.png "Result for MULT"). See the :ref:`graphing page<graph>`to style the graph and
 change units, axis names, etc...
 
 Variables can optionaly be prefixed with a tag and a colon to be
@@ -110,8 +109,8 @@ Config
 ------
 
 List of test configuration option not related to graphing (those ones
-are described `:ref:in the graphing options<graphing-options>`):
-- acceptable=0.01 Acceptable difference between multiple regression runs
+are described :ref:`graphing page<graph>`):
+- acceptable=0.01 Acceptable difference between multiple regression runs 
 - n\_runs=1 Number of runs to do of each test
 - unacceptable\_n\_runs=0 Number of runs to do when the value is first rejected (to avoid false positives). Half the most abnormal runs will be rejected to have a most common value average.
 - required\_tags= Comma-separated list of tags needed to run this run
@@ -126,7 +125,8 @@ will be append as a list, else the VARNAME will overwrite each others.
 
 To do more, one can use the %pyexit section to interpret the results :
 
-.. code-block::
+.. code-block:: python
+
     %pyexit
     import numpy as np
     loss=RESULTS["RX"] - RESULTS["TX"]

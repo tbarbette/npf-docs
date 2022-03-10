@@ -30,7 +30,7 @@ The example above will re-execute the test (script) for all "NUMBER" from 1 to 1
 ![sample picture](examples/tests-readme-ADDITION.png "Result for ADDITION")
 ![sample picture](examples/tests-readme-MULT.png "Result for MULT").
 
-See the :ref:`graphing page<graphing>` to style the graph and change units, axis names, etc...
+See the :ref:`graphing page<graph>` to style the graph and change units, axis names, etc...
 
 Variables can optionaly be prefixed with a tag and a colon to be included only
 if a tag is given (by the repo, or the command line argument):
@@ -48,7 +48,8 @@ Allow to define covariables and then use experimental design matrix to
 propose values in a range
 
 Take the following example:
-.. code-block::
+
+.. code-block:: bash
     A=[1-10]
     B=[1-10]
 
@@ -57,7 +58,7 @@ B=10)
 
 Now a covariable such as this will make variables move together:
 
-.. code-block::
+.. code-block:: bash
     {
         A=[1-10]
         B=[1-10]
@@ -68,7 +69,7 @@ Will lead to 10 tests, (A=1,B=1), (A=2, B=2) ... (A=10, B=10)
 The new parameter for ranges allows to draw values from a matrix of
 equal distances (see J. Santiago, M. Claeys-Bruno, and M. Sergent. Construction of Space-Filling Designs using WSP Algorithm for High Dimensional Spaces. Chemometrics and Intelligent Laboratory Systems, 113, 2012.), such as this:
 
-.. code-block::
+.. code-block:: bash
     {
         A=[1-1000#]
         B=[1-10000#]
@@ -85,7 +86,7 @@ Now that will still have 4 variables with different values, and the
 plot would probably not look like what you'd want. So the configuration
 option var_aggregate now accepts lists:
 
-.. code-block::
+.. code-block:: bash
     %config
     var_aggregate={A+B+C:all}
 
@@ -100,4 +101,4 @@ In the following exemple, a "X={0,1}" variable is defined, and many other variab
   
 .. note::
 
- TODO: Display this graph as a CDF
+ TODO: Explain how to display the graph as a CDF

@@ -7,7 +7,7 @@ Network Performance Framework (NPF) documentation
 Run performance tests on network software by running snippets of bash scripts on a cluster
 following a simple definition file. For instance, the following configuration to test iPerf3 performance (omitting graph styling options):
 
-.. code-block::
+.. code-block:: bash
 
    %info
    IPerf3 Throughput Experiment
@@ -31,7 +31,7 @@ Will automatically produce the following graph:
 
 When launching npf:
 
-.. code-block::
+.. code-block:: bash
 
    npf-run --test tests/tcp/01-iperf.npf
 
