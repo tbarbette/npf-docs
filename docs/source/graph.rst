@@ -1,3 +1,5 @@
+.. graph:
+# Graphing
 Graph are automatically generated for all tested variables
 combinations.
 
