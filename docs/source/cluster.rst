@@ -31,6 +31,7 @@ Most testie reference the NIC 0 as the first dataplane NIC to run the test. Ther
 
 NICs parameters are defined in the format N:type where N is a NIC reference number,
 and type is one of the following :
+
   * `ifname=interface_name`
   * `mac=ma:ca:dd:rr:es:s_`
   * `pci=0000:00:00.0`

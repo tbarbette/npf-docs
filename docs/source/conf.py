@@ -7,7 +7,7 @@ copyright = '2021, Tom Barbette'
 author = 'Barbette'
 
 release = '1.0'
-version = '1.0.18'
+version = '1.0.27'
 
 autosectionlabel_prefix_document = True
 

@@ -12,8 +12,7 @@ For instance, if there is only one dynamic variable, a line plot will be used, w
 
 
 Below, npf-run gave two series to the grapher (current and last commit), while the test script
-generate a matrix of Burst and Lengths, that is 2 dynamic variables and only a barplot can render that correctly
-as lines would be uncomparable.
+generate a matrix of Burst and Lengths, that is 2 dynamic variables and only a barplot can render multiple variables at the same time.
 
 .. image:: https://github.com/tbarbette/npf/raw/master/doc/sample_graph.png
    :width: 400
@@ -25,7 +24,7 @@ If there are 2 dynamic variables, but only a single serie (i.e. you used npf-com
    :width: 400
    :alt: Sample graph
 
-One can force the graph type with the "graph_type" config option. For instance, if you pass `--config graph_type=boxplot` to the command line, you will get a box plot no matter the number of dynamic variables.
+One can force the graph type with the "graph_type" config option. For instance, if you pass `\-\-config graph_type=boxplot` to the command line, you will get a box plot no matter the number of dynamic variables.
 
 
 Graphing options
@@ -33,11 +32,10 @@ Graphing options
 
 The graph can be tweaked using many options, and the data can also be transformed using multiple tools to better display results. Data transformation will also affect the output CSV. In any case none of these options affect the values in the data cache, so you may try different tweaks without risks.
 
-All the following options can be added to the %config section of the test script, or after the --config parameter on the command line of any of the tools.
+All the following options can be added to the %config section of the test script, or after the ``\-\-config` parameter on the command line of any of the tools.
 
-This section is in rework.
-- var prefix generally affect variables. It generally takes a list of variables, or a dict of variables->parameters.
-- graph prefix only affect the graph, styling ,etc. The CSV data will not be changed.
+* var prefix generally affect variables. It generally takes a list of variables, or a dict of variables->parameters.
+* graph prefix only affect the graph, styling ,etc. The CSV data will not be changed.
 
 Graph styling
 -------------

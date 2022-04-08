@@ -7,8 +7,8 @@ Writing a *.npf* test script
 Sections
 ========
 
-The test script is made of multiple sections, starting with a % like
-"%file CONFIG" which means that a file named CONFIG should be created
+The test script is made of multiple sections, starting with a `%` sign like
+`%file CONFIG` which means that a file named CONFIG should be created
 with the content following the section header.
 
 List of sections : 
@@ -94,26 +94,42 @@ picture](examples/tests-readme-ADDITION.png "Result for ADDITION")![sample
 picture](examples/tests-readme-MULT.png "Result for MULT"). See the :ref:`graphing page<graph>`to style the graph and
 change units, axis names, etc...
 
+Tags
+~~~~
+
 Variables can optionaly be prefixed with a tag and a colon to be
-included only if a tag is given (by the repo, or the command line
-argument): - cpu:CPU={0,1} If the tag cpu is given,
-$CPU will be expanded by 0 and 1  - -cpu:CPU=1    If the tag cpu is not given, $CPU
-will be expanded by 1
+included only if a tag is given. In the following example:
 
-This allows to do more extanded tests to grid-search some value, but do
-not include that in regression test.
+.. code-block:: bash
 
-All variables types and discussion about experimental design can be found in :ref:`the variables page <variables:variables>`
+    %variables
+    NUMBER=[1-10]
+    CPU=1
+    cpu:CPU={0,1}
+    
+If the *cpu* tag is given, `$CPU` will be expanded by 0 and 1 `--cpu:CPU=1`.  If the tag cpu is not given, `$CPU`
+will be expanded by 1.
+
+This allows to do more extanded tests to grid-search some value, but do not include that in most tests.
+
+All variables types and discussion about experimental design can be found in :ref:`the variables page <variables:variables>`.
+
+There are 3 ways to specify a tag:
+
+* by the repository in the `.repo` file (see :ref:`the reositories page <repos>`)
+* by the command line argument ``\-\-tags TAG``
+* with npf-compare, by duplicating a repository and specifying a list of tags or overwritten variables, e.g. ``npf-compare "iperf+feature:IPerf with the feature tag" "iperf:CPU=8:IPerf with 8 CPU" --test ...``
 
 Config
 ------
 
 List of test configuration option not related to graphing (those ones
 are described :ref:`graphing page<graph>`):
-- acceptable=0.01 Acceptable difference between multiple regression runs 
-- n\_runs=1 Number of runs to do of each test
-- unacceptable\_n\_runs=0 Number of runs to do when the value is first rejected (to avoid false positives). Half the most abnormal runs will be rejected to have a most common value average.
-- required\_tags= Comma-separated list of tags needed to run this run
+
+* acceptable=0.01 Acceptable difference between multiple regression runs 
+* n\_runs=1 Number of runs to do of each test
+* unacceptable\_n\_runs=0 Number of runs to do when the value is first rejected (to avoid false positives). Half the most abnormal runs will be rejected to have a most common value average.
+* required\_tags= Comma-separated list of tags needed to run this run
 
 pyexit
 ------
@@ -133,7 +149,7 @@ To do more, one can use the %pyexit section to interpret the results :
     RESULTS["LOSS"]=loss
 
 Any python code will be accepted, so one may compute variance among
-multiple results, etc. Kind results are available under KIND\_RESULTS.
+multiple results, etc. Name space results are available under KIND\_RESULTS.
 
 Constants
 =========
@@ -150,11 +166,11 @@ Multiple constants can be used in the files and scripts sections:
     - NPF\_MULTI\_ID: Index of the script when running multiple times the same script on each node usingthe "multi" feature, in general 1
     - NPF\_MULTI\_MAX: Number of multi as given to the cluster config (default is 1)
 
-test scripts shipped with NPF
+Test scripts shipped with NPF
 =============================
 
 Generic
-------
+-------
 
 Generic tests are used to do black-box testing, they are L2/L3
 generators, packets trace replay and HTTP generators.

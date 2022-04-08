@@ -52,10 +52,6 @@ in multiple different configuration very quickly and on serious hardware.
 Check out the :doc:`usage` section for further information, including
 how to :ref:`installation` the project.
 
-.. note::
-
-   This documentation is being created, most documentation is still in-text
-
 Contents
 --------
 
@@ -64,4 +60,5 @@ Contents
    tests
    variables
    graph
+   repos
    cluster

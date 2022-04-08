@@ -50,6 +50,7 @@ propose values in a range
 Take the following example:
 
 .. code-block:: bash
+
     A=[1-10]
     B=[1-10]
 
@@ -59,6 +60,7 @@ B=10)
 Now a covariable such as this will make variables move together:
 
 .. code-block:: bash
+
     {
         A=[1-10]
         B=[1-10]
@@ -70,6 +72,7 @@ The new parameter for ranges allows to draw values from a matrix of
 equal distances (see J. Santiago, M. Claeys-Bruno, and M. Sergent. Construction of Space-Filling Designs using WSP Algorithm for High Dimensional Spaces. Chemometrics and Intelligent Laboratory Systems, 113, 2012.), such as this:
 
 .. code-block:: bash
+
     {
         A=[1-1000#]
         B=[1-10000#]
@@ -87,13 +90,14 @@ plot would probably not look like what you'd want. So the configuration
 option var_aggregate now accepts lists:
 
 .. code-block:: bash
+
     %config
     var_aggregate={A+B+C:all}
 
 All points will be combined as a single run and will just be considered
 as "variance" of the other variables.
 
-In the following exemple, a "X={0,1}" variable is defined, and many other variables that are aggregated using *var_aggregated* as defined above. This is generated from the script `integration/exeperimental.npf <https://github.com/tbarbette/npf/blob/master/integration/experimental.npf>`__
+In the following exemple, a "X={0,1}" variable is defined, and many other variables are aggregated using *var_aggregated* as defined above. This is generated from the script `integration/exeperimental.npf <https://github.com/tbarbette/npf/blob/master/integration/experimental.npf>`__
 
 .. image:: https://github.com/tbarbette/npf/raw/master/integration/experimental.png
   :width: 400
@@ -101,4 +105,4 @@ In the following exemple, a "X={0,1}" variable is defined, and many other variab
   
 .. note::
 
- TODO: Explain how to display the graph as a CDF
+The :ref:`graphing page<graph>` gives more detail on how to tweak a graph or select a better representation.
