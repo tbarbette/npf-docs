@@ -29,14 +29,14 @@ Will automatically produce the following graph:
    :width: 400
    :alt: Result for tests/tcp/01-iperf.np
 
-When launching npf:
+When launching npf with the following command line:
 
 .. code-block:: bash
 
    npf-run --test tests/tcp/01-iperf.npf
 
 Test files allow to define a matrix of parameters to try many combinations of
-variables (see :ref:`variables` for a description of the possible definitions such as values, ranges, ...) for each test and report performance results and evolution for each combination of variables.
+variables for each test and report performance results and evolution for each combination of variables. Check the :ref:`the variables page <variables>` for a description of the possible definitions such as values, ranges, ...
 
 Finally, a graph will be built and statistical results may be computed for each test 
 showing the difference between variables values, different softwares, or the evolution of
@@ -49,8 +49,8 @@ their results, and graphs.
 NPF supports running the given test across a custer, allowing to try your tests
 in multiple different configuration very quickly and on serious hardware.
 
-Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
+Check out the :doc:`usage <usage>` section for further information, including
+how to :ref:`install <installation>` the project.
 
 Contents
 --------

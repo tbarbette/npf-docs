@@ -15,6 +15,7 @@ List of sections :
     * info : Information about what the test script does. Usually the first line is the title and will be by default used as the graph title 
     * config : Configuration options. See below.
     * variables : List of variables to define the matrix of parameters to try
+    * late_variables: List of variables that are not to be considered part of the test, like constants.
     * script : Bash commands to execute, the heart of the test. Can be defined to run with a specific role, role are mapped to cluster nodes. See the cluster section below 
     * init : Special script that run only once, before all other scripts (therefore, can be fought as an initialization script)
     * import : Import another test script and optionally under a given role. The repository comes with some "modules" test scripts intended for importation. They usually do specific tasks that we don't want to rewrite in all test script such as setting the cpu frequency, IP addresses for some NICs, ...
@@ -91,8 +92,26 @@ The example above will re-execute the test (script) for all "NUMBER"
 from 1 to 10. The following graphs will be automatically produced:
 ![sample
 picture](examples/tests-readme-ADDITION.png "Result for ADDITION")![sample
-picture](examples/tests-readme-MULT.png "Result for MULT"). See the :ref:`graphing page<graph>`to style the graph and
+picture](examples/tests-readme-MULT.png "Result for MULT"). See the :ref:`graphing page<graph>` to style the graph and
 change units, axis names, etc...
+
+Late variables
+~~~~~~~~~~~~~~
+For every run of every combination of variables, %late_variables defines a serie of supplementary parameters to consider. Those parameters cannot be list, they must all be constant.
+This is interesting to define constant of the experiment, parameters that will not polute the "X" of your dataset.
+
+.. code-block:: bash
+
+    %variables
+    RADIUS=[1-10]
+
+    %late_variables
+    PI=3.14
+
+    %script
+    MULT=$(echo "$RADIUS * $PI * $PI" | bc)
+    echo "RESULT-SURFACE $MULT"
+
 
 Tags
 ~~~~
