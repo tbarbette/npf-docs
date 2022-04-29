@@ -19,7 +19,7 @@ List of sections :
     * script : Bash commands to execute, the heart of the test. Can be defined to run with a specific role, role are mapped to cluster nodes. See the cluster section below 
     * init : Special script that run only once, before all other scripts (therefore, can be fought as an initialization script)
     * import : Import another test script and optionally under a given role. The repository comes with some "modules" test scripts intended for importation. They usually do specific tasks that we don't want to rewrite in all test script such as setting the cpu frequency, IP addresses for some NICs, ...
-    * include : A test script to be included inline, not as a sub-test script like import
+    * include : A test script to be included inline, not as a sub-test script like import but merely to be considered as a way to organise your test script in multiple files
     * sendfile : Send a file that lies with the test script to the remote machine
     * require : A special script that tells if the test script can run. If any line produce a return code different than 0, the test script will not run
     * pyexit : A python script that will be executed after each tests (but only once after all runs), mainly to change or interpret the results
@@ -150,6 +150,49 @@ are described :ref:`graphing page<graph>`):
 * unacceptable\_n\_runs=0 Number of runs to do when the value is first rejected (to avoid false positives). Half the most abnormal runs will be rejected to have a most common value average.
 * required\_tags= Comma-separated list of tags needed to run this run
 
+Include
+-------
+An include allows to import a sub-file as if its content was part of the your script. You can also overwrite parameter as PI in the following example.
+
+.. code-block:: bash
+    test.npf:
+
+    %variables
+    RADIUS=[1-10]
+
+    %include surface.npf PI=3.14
+
+    surface.npf:
+    %script
+    MULT=$(echo "$RADIUS * $PI * $PI" | bc)
+    echo "RESULT-SURFACE $MULT"
+
+If PI was set in %variables, the test would run for "RADIUS=1 PI=3.14", then "RADIUS=2 PI=3.14", ... It's better to keep it out of the list of variables, even if technically, it works.
+
+Import
+------
+
+Imports are much like includes, except they're meant to be re-used in different NPF scripts. For instance a packet generator, a module to measure the bitrate of a device, etc. Modules reside in a modules folder.
+
+Modules can be instanciated multiple times but, you can't use roles inside the module itself.
+
+.. code-block:: bash
+    test.npf:
+
+    %variables
+    MAX_CLOCK=30
+
+    %import@client clock
+    %import@server clock
+
+    modules/clock.npf:
+    %script
+    for i in seq($MAX_CLOCK) ;
+    do
+        echo "$(hostname)-$i-RESULT-CLOCK $i"
+        sleep 1
+    done
+
 pyexit
 ------
 
@@ -177,7 +220,7 @@ Multiple constants can be used in the files and scripts sections:
     - NPF\_ROOT : Path to NPF
     - NPF\_BUILD\_PATH: Path to the build folder of NPF 
     - NPF\_REPO: Path to the repository under test
-    - NPF\_testscript\_PATH: Path to the location of the test script path
+    - NPF\_TESTSCRIPT\_PATH: Path to the location of the test script path
     - NPF\_RESULT\_PATH: Path to the result folder (by default when the command is run, or as passed by the --result-path option)
     - NPF\_OUTPUT\_PATH: Path to the output folder (by default as result,unless given with --output-filename)
     - NPF\_NODE\_ID: Index of the node used for the same role, in general 1
