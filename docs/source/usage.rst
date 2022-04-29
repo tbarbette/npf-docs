@@ -61,12 +61,20 @@ Your *.npf* test file is composed of a serie of sections, as in the example give
 The sections describe the scripts to run, where to run them, what variables should be tested, what are their ranges, configuration parameters such as timeout, graph colors, etc...
 Each section is described in more details in :ref:`tests`. 
 
-When launching NPF, you **may** also give the name of one or more *repositories*, which are files located in the `repo` folder describing software to download, compile and install.
-Using repositories allows to ease the reproducibility of your experiment, but it is optional. By default a "fake" repository named "local" will be used, which compiles and installs nothing.
-They follow a format descrived in :ref:`repos`.
-
 Your test script will also define a few script *roles*, such as `client` or `server` as in the example above. When you actually launch your experiment, you must tell which machine (physical or virtual) will take the role. For simple cases, passing the address of a machine with the `\-\-cluster role=machine` will be enough.
 When you'd like to define parameters such as IPs and MAC addresses, you can define a *cluster* file that will describe details about each machines. See :ref:`cluster` for more details.
 
+When launching NPF, you **may** also give the name of one or more *repositories*, which are files located in the `repo` folder describing software to download, compile and install.
+Using repositories allows to ease the reproducibility of your experiment, but it is optional. By default a "fake" repository named "local" will be used, which compiles and installs nothing. It is advised to start this way: familiarize yourself with NPF before starting to temper with dependencies chain and build process.
+They follow a format descrived in :ref:`repos`.
+
 NPF uses a **cache** of the results. If you run the same experiment for the same variables and the same version of the *repository*, the test will not be launched but the values from the cache will be used instead.
 To ignore the cache, use `\-\-force-retest`
+
+Limitations
+===========
+On top of the dependencies stated above, there are a few limitations you should know about.
+
+Building is done locally
+------------------------
+For now, software described through `.repo` will be built locally. If you're not using NFS, it will then be copied to every machines at launch. Issue `https://github.com/tbarbette/npf/issues/5` tracks this limitation that will be adressed ASAP.
