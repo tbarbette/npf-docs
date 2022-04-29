@@ -155,6 +155,7 @@ Include
 An include allows to import a sub-file as if its content was part of the your script. You can also overwrite parameter as PI in the following example.
 
 .. code-block:: bash
+
     test.npf:
 
     %variables
@@ -177,6 +178,7 @@ Imports are much like includes, except they're meant to be re-used in different 
 Modules can be instanciated multiple times but, you can't use roles inside the module itself.
 
 .. code-block:: bash
+
     test.npf:
 
     %variables
