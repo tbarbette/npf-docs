@@ -35,25 +35,25 @@ To produce the following graph:
    :width: 400
    :alt: Result for tests/tcp/01-iperf.np
 
-Test scripts defines variables for which ``npf`` runs tests to evaluate their combinations
+Test scripts defines variables for which NPF runs tests to evaluate their combinations
 and report performance results.
 
-``npf`` builds graphs and computes statistical result for each test 
+NPF builds graphs and computes statistical result for each test 
 showing the difference between variables values, different softwares, or the evolution of
 performances through commits.
 
-``npf`` can execute tests on a computer cluster, running your tests
+NPF can execute tests on a computer cluster, running your tests
 in multiple configurations rapidly and on relevant hardware.
 
 Test scripts are easy to write and share.
 We encourage users to share their ``.npf`` scripts along with their code 
 to allow other users to reproduce their results and graphs.
 
-The documentation describes first the basic :doc:`usage <usage>` and :ref:`installation <installation>` of ``npf``.
+The documentation describes first the basic :doc:`usage <usage>` and :ref:`installation <installation>` of NPF.
 It then elaborates on writing ``.npf`` :ref:`tests <tests>` scripts, with the definition of :ref:`variables <variables>`
 and advanced configuration for :ref:`graphs <graph>` generation.
-``npf`` can also compile and deploy code as specified in :ref:`repositories <repos>`.
-Finally, computer clusters can be specified to ``npf`` in :ref:`cluster <cluster>` files.
+NPF can also compile and deploy code as specified in :ref:`repositories <repos>`.
+Finally, computer clusters can be specified to NPF in :ref:`cluster <cluster>` files.
 
 Contents
 --------
