@@ -9,11 +9,11 @@ Usage
 Install
 =======
 
-NPF can be installed using pip:
+NPF can be installed using pip in a Python 3 environment:
 
 .. code-block:: console
 
-   (.venv) $ python3 -m pip install npf
+   (.venv) $ python -m pip install npf
 
 On Ubuntu, a local install can be achieved with:
 
@@ -26,17 +26,17 @@ Run-time dependencies
 
 SSH
 ---
-NPF use SSH to run tests on computer cluster. Therefore SSH should be setup on each node for a password-less connection.
-Use public key authentication and add the required ssh keys to your ssh agent using `ssh-add` before running NPF.
+NPF use SSH to run tests on a computer cluster. Therefore SSH should be setup on each node for a password-less connection.
+Use public key authentication and add the required ssh keys to your ssh agent using ``ssh-add`` before running NPF.
 
 sudo (optional)
 ---------------
-Most DPDK-based but also other scripts use the `sudo=true` parameter in test scripts to gain root access. 
+Most DPDK-based scripts and scripts using the ``sudo=true`` parameter in scripts roles to use root priviledge. 
 You can either connect as root to the cluster (see the :ref:`cluster` section) or set up password-less sudo on all nodes.
 
 File-sharing (optional)
 -----------------------
-Use either a NFS shared mounted on all nodes or sshfs to mount the local NPF folder on all nodes. The path to the shared NPF root can be different on each node, see the cluster section below.
+Use either a NFS shared mount on all nodes or sshfs to mount the local NPF folder on all nodes. The path to the shared NPF root can be different on each node, see the cluster section below.
 If this is not the case, the dependencies (software built by NPF) will be sent to all nodes that will use them in the corresponding scripts through SSH, but it is slower.
 
 
@@ -64,9 +64,10 @@ The sections describe the variables to test and their ranges, the code that must
 Each section is described in more details in :ref:`tests`. 
 
 A test script also defines several script *roles*, such as ``client`` or ``server`` as in the above example.
-Each bash code snippet will be executed on its corresponding role. 
+Each bash code snippet will be executed by its corresponding role. 
 In our example, the ``server`` role starts an iPerf3 server in the background 
-while the ``client`` role starts an iPerf3 client given several parameters defined as variables in the test script.
+while the ``client`` role starts an iPerf3 client with several arguments with values taken from variables defined in the test script.
+In this example, ``PARALLEL`` takes values from 1 to 8, while ``ZEROCOPY`` takes either ``-Z`` or an empty string as value.
 
 When running the script, roles are associated to computers in the cluster in two manner. 
 First, through the command line by passing pairs of role and address with ``--cluster role1=address1 role2=address2``.
@@ -90,8 +91,11 @@ To ignore the cache, use ``--force-retest``.
 
 Limitations
 ===========
-On top of the dependencies stated above, there are a few limitations you should know about.
 
-Building is done locally
-------------------------
-For now, software described through `.repo` will be built locally. If you're not using NFS, it will then be copied to every machines at launch. Issue `https://github.com/tbarbette/npf/issues/5` tracks this limitation that will be adressed ASAP.
+There are known limitations for which solutions will be brought to NPF.
+
+Local build only
+----------------
+Software described in ``.repo`` files are built locally.
+When NFS or sshfs is not used, NPF copies binaries locally built to each computer of the cluster when running the test. 
+Issue `#5 <https://github.com/tbarbette/npf/issues/5>`_ tracks this limitation.
