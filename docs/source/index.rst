@@ -5,7 +5,7 @@ Network Performance Framework (NPF) documentation
 =================================================
 
 Run performance tests on network software by running snippets of bash scripts on a cluster
-following a simple definition file. For instance, the following configuration to test iPerf3 performance (omitting graph styling options):
+following a simple definition script. For instance, the following test script for iPerf3 throughput (omitting graph styling options):
 
 .. code-block:: bash
 
@@ -23,34 +23,37 @@ following a simple definition file. For instance, the following configuration to
    result=$(iperf3 -f k -t 2 -P $PARALLEL $ZEROCOPY -c ${server:0:ip} | tail -n 3 | grep -ioE "[0-9.]+ [kmg]bits")
    echo "RESULT-THROUGHPUT $result"
 
-Will automatically produce the following graph:
-
-.. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/01-iperf-THROUGHPUT.png
-   :width: 400
-   :alt: Result for tests/tcp/01-iperf.np
-
-When launching npf with the following command line:
+Can be run with the following command line:
 
 .. code-block:: bash
 
    npf-run --test tests/tcp/01-iperf.npf
 
-Test files allow to define a matrix of parameters to try many combinations of
-variables for each test and report performance results and evolution for each combination of variables. Check the :ref:`the variables page <variables>` for a description of the possible definitions such as values, ranges, ...
+To produce the following graph:
 
-Finally, a graph will be built and statistical results may be computed for each test 
+.. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/01-iperf-THROUGHPUT.png
+   :width: 400
+   :alt: Result for tests/tcp/01-iperf.np
+
+Test scripts defines variables for which ``npf`` runs tests to evaluate their combinations
+and report performance results.
+
+``npf`` builds graphs and computes statistical result for each test 
 showing the difference between variables values, different softwares, or the evolution of
 performances through commits.
 
-Test files are simple to write, and easy to share, as such we encourage
-users to share their ".npf" scripts with their code to allow other users to reproduce
-their results, and graphs.
+``npf`` can execute tests on a computer cluster, running your tests
+in multiple configurations rapidly and on relevant hardware.
 
-NPF supports running the given test across a custer, allowing to try your tests
-in multiple different configuration very quickly and on serious hardware.
+Test scripts are easy to write and share.
+We encourage users to share their ``.npf`` scripts along with their code 
+to allow other users to reproduce their results and graphs.
 
-Check out the :doc:`usage <usage>` section for further information, including
-how to :ref:`install <installation>` the project.
+The documentation describes first the basic :doc:`usage <usage>` and :ref:`installation <installation>` of ``npf``.
+It then elaborates on writing ``.npf`` :ref:`tests <tests>` scripts, with the definition of :ref:`variables <variables>`
+and advanced configuration for :ref:`graphs <graph>` generation.
+``npf`` can also compile and deploy code as specified in :ref:`repositories <repos>`.
+Finally, computer clusters can be specified to ``npf`` in :ref:`cluster <cluster>` files.
 
 Contents
 --------
