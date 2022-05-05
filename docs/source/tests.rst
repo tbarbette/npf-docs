@@ -12,7 +12,6 @@ In a test script, a section starts with a header identified by a ``%`` sign pref
 For instance ``%info`` is starts an info section.
 A section can take arguments, separated by spaces and following its type name.
 
-List of sections :
 ``%info``
     Contains information about what the test script does. The first line is used as graph title by default.
 ``%config``
