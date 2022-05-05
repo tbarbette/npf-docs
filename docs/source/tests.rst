@@ -1,33 +1,50 @@
 .. _tests:
 
-****************************
-Writing a *.npf* test script
-****************************
+*************************
+Writing a NPF test script
+*************************
 
 Sections
 ========
 
-The test script is made of multiple sections, starting with a `%` sign like
-`%file CONFIG` which means that a file named CONFIG should be created
-with the content following the section header.
+A NPF test script is made of sections. There are several types of sections.
+In a test script, a section starts with a header identified by a ``%`` sign prefixing its type name.
+For instance ``%info`` is starts an info section.
+A section can take arguments, separated by spaces and following its type name.
 
-List of sections : 
-    * info : Information about what the test script does. Usually the first line is the title and will be by default used as the graph title 
-    * config : Configuration options. See below.
-    * variables : List of variables to define the matrix of parameters to try
-    * late_variables: List of variables that are not to be considered part of the test, like constants.
-    * script : Bash commands to execute, the heart of the test. Can be defined to run with a specific role, role are mapped to cluster nodes. See the cluster section below 
-    * init : Special script that run only once, before all other scripts (therefore, can be fought as an initialization script)
-    * import : Import another test script and optionally under a given role. The repository comes with some "modules" test scripts intended for importation. They usually do specific tasks that we don't want to rewrite in all test script such as setting the cpu frequency, IP addresses for some NICs, ...
-    * include : A test script to be included inline, not as a sub-test script like import but merely to be considered as a way to organise your test script in multiple files
-    * sendfile : Send a file that lies with the test script to the remote machine
-    * require : A special script that tells if the test script can run. If any line produce a return code different than 0, the test script will not run
-    * pyexit : A python script that will be executed after each tests (but only once after all runs), mainly to change or interpret the results
+List of sections :
+``%info``
+    Contains information about what the test script does. The first line is used as graph title by default.
+``%config``
+    Configuration options for the test execution and graph styling.
+``%variables``
+    List of variables to define the matrix of parameters to test.
+``%late_variables``
+    List of variables that are not to be considered part of the test, like constants.
+``%script``
+    Bash commands to execute for the test. Can be defined to run with a specific role when appended with ``@rolename``.
+``%init``
+    Special script run once before all other scripts.
+``%import``
+    Import another test script and optionally under a given role when appended with ``@rolename``. 
+    NPF comes with *modules* test scripts intended for importation. They usually do specific tasks that can be re-used such as setting the CPU frequency.
+``%include``
+    A test script to be included inline. It can be used to organise a test script in multiple files.
+``%sendfile``
+    Send a file that lies with the test script to the remote machine. The source path of the file is given as first argument. The destination path is the test execution directory.
+``%require``
+    Determines whether the test can run. NPF runs a test when all lines of the section returns a zero return code.
+``%pyexit``
+    A Python script executed after the test. It can change and interpret its results.
+``%file``
+    Creates a file with the filename given as first argument. The content of the file is the section content.
+
+The following subsections describes NPF script sections in more details.
 
 Script
 ------
 
-The script is the heart of NPF. A script section defines a simple list
+The script section is the heart of NPF. A script section defines a series
 of bash commands to be executed.
 
 .. code-block:: bash
@@ -36,11 +53,12 @@ of bash commands to be executed.
     TOTAL=$(bc 5 + 3)
     echo "RESULT $TOTAL"
 
-This simple test script will execute locally those two commands, and
-"collect" the result that is 8. By default a script is re-executed 3
-times to observe the variance.
+This script executes locally those two commands, and
+stores the result by using the ``echo "RESULT value"`` construct.
 
-There can be multiple RESULT:
+.. By default a test is executed 3 times to observe the variance.
+
+There can be multiple ``RESULT``:
 
 .. code-block:: bash
 
@@ -50,32 +68,36 @@ There can be multiple RESULT:
     echo "RESULT-ADDITION $ADD"
     echo "RESULT-DIFFERENCE $DIFF"
 
-The result will be collected, and 2 graphs will be produced, showing the
-value of ADDITION is 8 and the DIFFERENCE is 2.
+The two results are stored and two graphs are produced, showing that the
+value of ``ADDITION`` is 8 and the ``DIFFERENCE`` is 2.
 
-Finally, scripts can take some parameters and can be required to be
-executed on a specific machine (roles):
+Finally, scripts sections can specify a role which wil execute their code,
+and arguments regarding their execution.
 
 .. code-block:: bash
 
-    %script@client autokill=false delay=5
+    %script@client delay=5 autokill=false
     echo "EVENT finished"
 
-    %script@server sudo=true waitfor=finished
+    %script@server waitfor=finished sudo=true
     echo "RESULT 79"
 
-In this example, the first script will be launched on "client" and the
-second on "server". See :ref:`cluster` to check how to attribute those
-roles to real machines. The first script will not interrupt the test
-when it finishes, and will start after a delay of 5 seconds. The second
-script will run on "server", with elevated priviledges. But it will run
-only when the first one has finished and displayed the "finished" event.
+In this example, the first script is executed on the ``client`` role while the
+second is executed on the ``server`` role. Roles are abstract identities that are
+associated at run time to real computers in the cluster, either by specifying cluster nodes
+files as described in section :ref:`cluster` or by using the command line argument
+``--cluster role1=address1 [role2=address2 [...]]``.
+
+This example also specifies additional arguments.
+The first script starts 5 seconds after the test execution has begun (``delay=5``), and its completion does not halt the test execution (``autokill=false``). 
+The second script is executed when the ``finished`` event is reached (``waitfor=finished``) and with elevated priviledges (``sudo=true``).
 
 Variables
 ---------
 
-List of variables that will be replaced in any script or file section
-(searching for pattern $VARIABLE or ${VARIABLE}).
+The ``%variables`` section defines variables and the values they can take.
+NPF generates executions of a test scripts to explore the combinations of values these variables can take.
+Values of a variable named ``LENGTH`` can be retrieved with patterns ``$LENGTH`` or ``${LENGTH}`` in ``%script`` and ``%file`` sections of a test file.
 
 .. code-block:: bash
 
@@ -88,17 +110,15 @@ List of variables that will be replaced in any script or file section
     echo "RESULT-ADDITION $ADD"
     echo "RESULT-MULT $MULT"
 
-The example above will re-execute the test (script) for all "NUMBER"
-from 1 to 10. The following graphs will be automatically produced:
-![sample
-picture](examples/tests-readme-ADDITION.png "Result for ADDITION")![sample
-picture](examples/tests-readme-MULT.png "Result for MULT"). See the :ref:`graphing page<graph>` to style the graph and
-change units, axis names, etc...
+NPF executes this test script by running the script sections for all values of ``$NUMBER``, i.e. from 1 to 10.
+More details on variables can be found in the :ref:`variables` page.
 
 Late variables
 ~~~~~~~~~~~~~~
-For every run of every combination of variables, %late_variables defines a serie of supplementary parameters to consider. Those parameters cannot be list, they must all be constant.
-This is interesting to define constant of the experiment, parameters that will not polute the "X" of your dataset.
+
+The ``%late_variables`` section defines constants variables.
+Their values remain identical throughout the execution of the test.
+These variables are omitted from graphs.
 
 .. code-block:: bash
 
@@ -112,12 +132,13 @@ This is interesting to define constant of the experiment, parameters that will n
     MULT=$(echo "$RADIUS * $PI * $PI" | bc)
     echo "RESULT-SURFACE $MULT"
 
+This examples computes the surface of a circle, with the ``PI`` variable given as constant.
+The ``SURFACE`` result is plotted against the ``RADIUS`` variable, without showing the ``PI`` constant.
 
 Tags
 ~~~~
 
-Variables can optionaly be prefixed with a tag and a colon to be
-included only if a tag is given. In the following example:
+``%script`` sections and variables can be omitted or included base on a tag, given by a ``repo`` or the ``--tags tag [tag ...]`` argument.
 
 .. code-block:: bash
 
@@ -125,36 +146,43 @@ included only if a tag is given. In the following example:
     NUMBER=[1-10]
     CPU=1
     cpu:CPU={0,1}
-    
-If the *cpu* tag is given, `$CPU` will be expanded by 0 and 1 `--cpu:CPU=1`.  If the tag cpu is not given, `$CPU`
-will be expanded by 1.
 
-This allows to do more extanded tests to grid-search some value, but do not include that in most tests.
+When the ``cpu`` tag is given, ``$CPU`` take values 0 and 1. Otherwise, ``$CPU`` is takes the value 1.
+Tags allow to toggle in and out variables and script sections together. This can be used to test more values and more features when needed.
 
-All variables types and discussion about experimental design can be found in :ref:`the variables page <variables:variables>`.
-
-There are 3 ways to specify a tag:
-
-* by the repository in the `.repo` file (see :ref:`the reositories page <repos>`)
-* by the command line argument ``\-\-tags TAG``
-* with npf-compare, by duplicating a repository and specifying a list of tags or overwritten variables, e.g. ``npf-compare "iperf+feature:IPerf with the feature tag" "iperf:CPU=8:IPerf with 8 CPU" --test ...``
+``npf-compare`` can also be given repositories with a tag, e.g. ``npf-compare "iperf+feature:IPerf with the feature tag" "iperf:CPU=8:IPerf with 8 CPU" --test ...``
 
 Config
 ------
 
-List of test configuration option not related to graphing (those ones
-are described :ref:`graphing page<graph>`):
+The ``%config`` section contains configuration options, both related to the execution of the test and the graphs format.
+All graph-related configuration options are described in the :ref:`graphs page<graph>`.
 
-* acceptable=0.01 Acceptable difference between multiple regression runs 
-* n\_runs=1 Number of runs to do of each test
-* unacceptable\_n\_runs=0 Number of runs to do when the value is first rejected (to avoid false positives). Half the most abnormal runs will be rejected to have a most common value average.
-* required\_tags= Comma-separated list of tags needed to run this run
+``acceptable=0.01``
+    Acceptable difference between multiple regression runs 
+``n_runs=1``
+    Number of runs to do of each test
+``unacceptable_n_runs=0``
+    Number of runs to do when the value is first rejected (to avoid false positives). 
+    Half the most abnormal runs will be rejected to have a most common value average.
+``required_tags=``
+    Comma-separated list of tags required to run the test
 
 Include
 -------
-An include allows to import a sub-file as if its content was part of the your script. You can also overwrite parameter as PI in the following example.
+
+The ``%include`` section allows including a file inline in the test.
+Using this section, a complex NPF test file can be split in multiple files.
+Parameters of the included file can be overwritten by passing ``VAR=VAL`` pairs as arguments.
 
 .. code-block:: bash
+
+    surface.npf:
+
+    %script
+    MULT=$(echo "$RADIUS * $PI * $PI" | bc)
+    echo "RESULT-SURFACE $MULT"
+
 
     test.npf:
 
@@ -163,31 +191,22 @@ An include allows to import a sub-file as if its content was part of the your sc
 
     %include surface.npf PI=3.14
 
-    surface.npf:
-    %script
-    MULT=$(echo "$RADIUS * $PI * $PI" | bc)
-    echo "RESULT-SURFACE $MULT"
-
-If PI was set in %variables, the test would run for "RADIUS=1 PI=3.14", then "RADIUS=2 PI=3.14", ... It's better to keep it out of the list of variables, even if technically, it works.
+    
+The value of ``PI`` is overwritten when including the ``surface.npf`` script.
 
 Import
 ------
 
-Imports are much like includes, except they're meant to be re-used in different NPF scripts. For instance a packet generator, a module to measure the bitrate of a device, etc. Modules reside in a modules folder.
-
-Modules can be instanciated multiple times but, you can't use roles inside the module itself.
+The ``%import`` section is used to import *modules*.
+Modules are small scripts that can be re-used in NPF scripts. Modules cannot specify roles.
+Rather, when importing a module, its role is specified using the ``%import@role`` construct.
+These modules can be a packet generator, a module to measure the bitrate of a device, etc. 
+Modules reside in the ``modules`` folder.
 
 .. code-block:: bash
 
-    test.npf:
-
-    %variables
-    MAX_CLOCK=30
-
-    %import@client clock
-    %import@server clock
-
     modules/clock.npf:
+    
     %script
     for i in seq($MAX_CLOCK) ;
     do
@@ -195,13 +214,23 @@ Modules can be instanciated multiple times but, you can't use roles inside the m
         sleep 1
     done
 
+    test.npf:
+
+    %variables
+    MAX_CLOCK=30
+
+    %import@client clock
+    %import@server clock   
+
+In this example, a ``clock.npf`` module is defined and imported for the ``server`` and ``client`` roles.
+
 pyexit
 ------
 
-NPF will extract all results prefixed by *RESULT[-VARNAME]*. If VARNAME
-is in result\_add={...} config list, occurences of the same VARNAME will
-be added together, if it is in the result\_append config\_list, results
-will be append as a list, else the VARNAME will overwrite each others.
+NPF extracts all results prefixed by ``RESULT[-VARNAME]``. When ``VARNAME``
+is in ``result_add={...}`` config list, occurences of the same ``VARNAME`` will
+be added together, if it is in the ``result_append`` config list, results
+will be append as a list, else occurences of ``VARNAME overwrite each others.
 
 To do more, one can use the %pyexit section to interpret the results :
 
@@ -212,23 +241,34 @@ To do more, one can use the %pyexit section to interpret the results :
     loss=RESULTS["RX"] - RESULTS["TX"]
     RESULTS["LOSS"]=loss
 
-Any python code will be accepted, so one may compute variance among
-multiple results, etc. Name space results are available under KIND\_RESULTS.
+All Python code are accepted, so one may compute variance among
+multiple results, etc. Name space results are available under ``KIND_RESULTS``.
 
-Constants
-=========
+NFP constants
+=============
 
 Multiple constants can be used in the files and scripts sections: 
-    - NPF\_ROOT : Path to NPF
-    - NPF\_BUILD\_PATH: Path to the build folder of NPF 
-    - NPF\_REPO: Path to the repository under test
-    - NPF\_TESTSCRIPT\_PATH: Path to the location of the test script path
-    - NPF\_RESULT\_PATH: Path to the result folder (by default when the command is run, or as passed by the --result-path option)
-    - NPF\_OUTPUT\_PATH: Path to the output folder (by default as result,unless given with --output-filename)
-    - NPF\_NODE\_ID: Index of the node used for the same role, in general 1
-    - NPF\_NODE\_MAX: Number of nodesrunning the same role, in general 1
-    - NPF\_MULTI\_ID: Index of the script when running multiple times the same script on each node usingthe "multi" feature, in general 1
-    - NPF\_MULTI\_MAX: Number of multi as given to the cluster config (default is 1)
+
+``NPF_ROOT``
+    Path to NPF
+``NPF_BUILD_PATH``
+    Path to the build folder of NPF 
+``NPF_REPO``
+    Path to the repository under test
+``NPF_TESTSCRIPT_PATH``
+    Path to the location of the test script path
+``NPF_RESULT_PATH``
+    Path to the result folder (by default when the command is run, or as passed by the --result-path option)
+``NPF_OUTPUT_PATH``
+    Path to the output folder (by default as result,unless given with --output-filename)
+``NPF_NODE_ID``
+    Index of the node used for the same role, in general 1
+``NPF_NODE_MAX``
+    Number of nodesrunning the same role, in general 1
+``NPF_MULTI_ID``
+    Index of the script when running multiple times the same script on each node using the "multi" feature, in general 1
+``NPF_MULTI_MAX``
+    Number of multi as given to the cluster config (default is 1)
 
 Test scripts shipped with NPF
 =============================
@@ -237,9 +277,9 @@ Generic
 -------
 
 Generic tests are used to do black-box testing, they are L2/L3
-generators, packets trace replay and HTTP generators.
+generators, packets trace replayers and HTTP generators.
 
-They are generic in the sense that you could use them out of the box to
+They are generic in the sense that they can be used to
 test any device under test in the middle of a client and a server.
 
 -   generic\_dpdk : DPDK-based tests, need a DPDK environment setted up
