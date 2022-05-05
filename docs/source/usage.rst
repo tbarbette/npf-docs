@@ -9,13 +9,13 @@ Usage
 Install
 =======
 
-To use NPF, first install it using pip:
+NPF can be installed using pip in a Python 3 environment:
 
 .. code-block:: console
 
-   (.venv) $ pip install npf
+   (.venv) $ python -m pip install npf
 
-On ubuntu, you can simply do:
+On Ubuntu, a local install can be achieved with:
 
 .. code-block:: console
 
@@ -26,15 +26,17 @@ Run-time dependencies
 
 SSH
 ---
-Cluster-based tests use SSH to launch multiple software on different nodes, therefore SSH should be setup on each node for a password-less connection. Use public key authentication and be sure to add the ssh keys in your ssh agent using `ssh-add` before running NPF.
+NPF use SSH to run tests on a computer cluster. Therefore SSH should be setup on each node for a password-less connection.
+Use public key authentication and add the required ssh keys to your ssh agent using ``ssh-add`` before running NPF.
 
 sudo (optional)
 ---------------
-Most DPDK-based but also other scripts use the `sudo=true` parameter in test scripts to gain root access. You can either always connect as root to other servers (see the :ref:`cluster` section) or set up password-less sudo on all nodes.
+Most DPDK-based scripts and scripts using the ``sudo=true`` parameter in scripts roles to use root priviledge. 
+You can either connect as root to the cluster (see the :ref:`cluster` section) or set up password-less sudo on all nodes.
 
 File-sharing (optional)
 -----------------------
-Use either a NFS shared mounted on all nodes or sshfs to mount the local NPF folder on all nodes. The path to the shared NPF root can be different on each node, see the cluster section below.
+Use either a NFS shared mount on all nodes or sshfs to mount the local NPF folder on all nodes. The path to the shared NPF root can be different on each node, see the cluster section below.
 If this is not the case, the dependencies (software built by NPF) will be sent to all nodes that will use them in the corresponding scripts through SSH, but it is slower.
 
 
@@ -57,23 +59,43 @@ The big picture
    result=$(iperf3 -f k -t 2 -P $PARALLEL $ZEROCOPY -c ${server:0:ip} | tail -n 3 | grep -ioE "[0-9.]+ [kmg]bits")
    echo "RESULT-THROUGHPUT $result"
 
-Your *.npf* test file is composed of a serie of sections, as in the example given above.
-The sections describe the scripts to run, where to run them, what variables should be tested, what are their ranges, configuration parameters such as timeout, graph colors, etc...
+A *.npf* test script is composed of a series of sections, as illustrated in the above example.
+The sections describe the variables to test and their ranges, the code that must be run for each computer in the cluster, but also configuration parameters such as timeout, graph colors, etc...
 Each section is described in more details in :ref:`tests`. 
 
-Your test script will also define a few script *roles*, such as `client` or `server` as in the example above. When you actually launch your experiment, you must tell which machine (physical or virtual) will take the role. For simple cases, passing the address of a machine with the `\-\-cluster role=machine` will be enough.
-When you'd like to define parameters such as IPs and MAC addresses, you can define a *cluster* file that will describe details about each machines. See :ref:`cluster` for more details.
+A test script also defines several script *roles*, such as ``client`` or ``server`` as in the above example.
+Each bash code snippet will be executed by its corresponding role. 
+In our example, the ``server`` role starts an iPerf3 server in the background 
+while the ``client`` role starts an iPerf3 client with several arguments with values taken from variables defined in the test script.
+In this example, ``PARALLEL`` takes values from 1 to 8, while ``ZEROCOPY`` takes either ``-Z`` or an empty string as value.
 
-When launching NPF, you **may** also give the name of one or more *repositories*, which are files located in the `repo` folder describing software to download, compile and install. They follow a format descrived in :ref:`repos`.
-Using repositories allows to ease the reproducibility of your experiment, but it is optional. By default a "fake" repository named "local" will be used, which compiles and installs nothing. It is advised to start this way: familiarize yourself with NPF using no repositories or dependencies before starting to temper with dependencies chain and build process.
+When running the script, roles are associated to computers in the cluster in two manner. 
+First, through the command line by passing pairs of role and address with ``--cluster role1=address1 role2=address2``.
+Second, by defining a *cluster* file describing details about each computer of the cluster.
+A cluster file can contain advanced parameters such as interface names, IPs and MAC addresses. 
+See :ref:`cluster` for more details.
 
-NPF uses a **cache** of the results. If you run the same experiment for the same variables and the same version of the *repository*, the test will not be launched but the values from the cache will be used instead.
-To ignore the cache, use `\-\-force-retest`
+When launching NPF, one or more *repositories* can be optionnally specified.
+These are files located in the ``repo`` folder that describe software to download, compile and install. 
+Their format is described in :ref:`repos`.
+Using repositories ease the reproducibility of your experiment.
+These are optional and NPF uses a repository named "local" by default, which do not compile nor install software.
+
+.. note::
+   It is advised to start using NPF without repositories or dependencies handled by NPF.
+   When some familiarity with NPF is gained, start using its dependencies chains and build process.
+
+NPF uses a **cache** of the results it obtains. 
+When the same experiment for the same variables and version of the repository is ran, the test is not ran but the values from the cache are used instead.
+To ignore the cache, use ``--force-retest``.
 
 Limitations
 ===========
-On top of the dependencies stated above, there are a few limitations you should know about.
 
-Building is done locally
-------------------------
-For now, software described through `.repo` will be built locally. If you're not using NFS, it will then be copied to every machines at launch. Issue `https://github.com/tbarbette/npf/issues/5` tracks this limitation that will be adressed ASAP.
+There are known limitations for which solutions will be brought to NPF.
+
+Local build only
+----------------
+Software described in ``.repo`` files are built locally.
+When NFS or sshfs is not used, NPF copies binaries locally built to each computer of the cluster when running the test. 
+Issue `#5 <https://github.com/tbarbette/npf/issues/5>`_ tracks this limitation.
