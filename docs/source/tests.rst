@@ -230,7 +230,7 @@ pyexit
 NPF extracts all results prefixed by ``RESULT[-VARNAME]``. When ``VARNAME``
 is in ``result_add={...}`` config list, occurences of the same ``VARNAME`` will
 be added together, if it is in the ``result_append`` config list, results
-will be append as a list, else occurences of ``VARNAME overwrite each others.
+will be append as a list, else occurences of ``VARNAME`` overwrite each others.
 
 To do more, one can use the %pyexit section to interpret the results :
 
