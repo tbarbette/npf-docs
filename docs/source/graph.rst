@@ -82,11 +82,17 @@ Series tweaking
 
 Information on graphs
 ^^^^^^^^^^^^^^^^^^^^^
-- **graph_legend** =true/false Enable/disable legend. Default is true.
 - **title** =title Title of the graph
 - **var_hide** ={A,B,...} List of variables to hide
 - **var_label_dir** ={A:vertical,B:horizontal} Force the direction of labels on the X axis for the given variables. By default, vertical when there are more than 8 values, horizontal otherwise. Accepted values: vertical, horizontal, diagonal
 - **graph_force_diagonal_labels** =true/false Always use diagonal labels for the X axis, independently from the `var_label_dir` setting. False by default.
+
+Legend
+^^^^^^
+- **graph_legend** =true/false Enable/disable legend. Default is true.
+- **graph_legend_loc** =best Legend location, using matplotlib terminology (see `legend <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.legend.html>`), eventually prefixed by `outer` to put the legend outside the graph. E.g. `outer lower center`
+- **graph_legend_ncol** =1 Number of columns in the legend
+- **graph_legend_params** ={} Dictionnary of arguments to pass to matplotlib legend() function, e.g. `{frameon:0,facecolor:black}`
 
 Data transformation
 ^^^^^^^^^^^^^^^^^^^
