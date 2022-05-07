@@ -90,7 +90,7 @@ Information on graphs
 Legend
 ^^^^^^
 - **graph_legend** =true/false Enable/disable legend. Default is true.
-- **graph_legend_loc** =best Legend location, using matplotlib terminology (see `legend <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.legend.html>`), eventually prefixed by `outer` to put the legend outside the graph. E.g. `outer lower center`
+- **graph_legend_loc** =best Legend location, using matplotlib terminology (see `legend <https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.legend.html>`_), eventually prefixed by `outer` to put the legend outside the graph. E.g. `outer lower center`
 - **graph_legend_ncol** =1 Number of columns in the legend
 - **graph_legend_params** ={} Dictionnary of arguments to pass to matplotlib legend() function, e.g. `{frameon:0,facecolor:black}`
 
