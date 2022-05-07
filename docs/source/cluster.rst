@@ -1,7 +1,14 @@
 .. _cluster:
 
+Cluster operations
+==================
+
+NPF is built to distribute script over a cluster of (perhaps virtual) machines.
+
+.. _cluster_conf:
+
 Cluster configuration
-=====================
+---------------------
 
 For simple test case `--cluster client=user@server` argument is enough to configure an experiment to run the *client* role on the machine *server* using the username *user*. However to define more parameters for the server, such as the NIC orders and interface names, one must use a `.node` file. Typically, you will create a file named `server.node` in a folder named `cluster` alongside your NPF tests files that contains a few configuration variables for the machine named `server`.
 
@@ -41,4 +48,39 @@ For tests using the standard networking stack, setting the `ip` and the `ifname`
 
 For tests using DPDK, and more generally L2 tests, the PCI adress and MAC should be defined.
 
-See cluster01.node.sample for an example. Note that localhost.node is the default node used when roles are not defined or not mapped
+See cluster01.node.sample for an example. Note that localhost.node is the default node used when roles are not defined or not mapped.
+
+
+.. _role_repetition:
+
+Running a single script on multiple machines
+--------------------------------------------
+
+It is authorized to assign multiple machines to the same role, by running  `--cluster client=user01@server01.network.edu client=user01@server02.network.edu`.
+
+The script will run on each machines, in this example therefore having multiple client machines. The constants `$NPF_NODE_MAX` can be used inside scripts and files to get the number of machines assigned to the script/files's given role. Each machine will be assigned an increasing id available through `$NPF_NODE_ID`.
+
+The number of machines assigned to a specific role can be retrieved via `${role:node}`.
+
+The following example shows how multiple client can be configured using different IPs, and use the WRK module to generate HTTP requests towards a common server. This is useful to create more load towards a device under test.
+
+.. code-block::
+
+  %variables
+  WRK_HOST=10.100.0.100
+
+  %init@client
+  ifconfig ${self:0:ifname} 10.100.0.${NPF_NODE_ID} netmask 255.255.255.0
+
+  %import@client wrk2
+
+.. _multi:
+
+Running the same script multiple times on each machine
+------------------------------------------------------
+
+It can be useful to run the same script multiple times in parallel on each machines. For instance, when the software does not support multi-threading, or to use multiple network namespace.
+
+To run 16 times the "client" scripts, use `--cluster client=user01@server01.network.edu,multi=16`. Similarly to running the script on multiple nodes, `${NPF_MULTI_MAX}` will be the given number of times scripts should run, and `${NPF_MULTI_ID}` an increasing ID for each scripts.
+
+One can also append `mode=netns` to run each scripts inside different network namespaces. I.e. `--cluster client=user01@server01.network.edu,multi=16,mode=netns`. The namsepace must be created in an init script with "ip netns add npfns${NPF_MULTI_ID}". Check the `modules/wrk-nsdelay.npf` example that supports both multiple nodes and the "multi" feature as an example to simulate many different clients using a per-namespace link delay simulation using netem.

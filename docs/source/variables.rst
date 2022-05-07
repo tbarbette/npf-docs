@@ -132,4 +132,4 @@ This is generated from the script `integration/exeperimental.npf <https://github
   
 .. note::
 
-The :ref:`graphing page<graph>` gives more details on ways to tweak graphs and choose a better representation.
+    The :ref:`graphing page<graph>` gives more details on ways to tweak graphs and choose a better representation.

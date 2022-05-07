@@ -146,7 +146,7 @@ Tags
     CPU=1
     cpu:CPU={0,1}
 
-When the ``cpu`` tag is given, ``$CPU`` take values 0 and 1. Otherwise, ``$CPU`` is takes the value 1.
+When the ``cpu`` tag is given, ``$CPU`` take values 0 and 1. Otherwise, ``$CPU`` takes the value 1.
 Tags allow to toggle in and out variables and script sections together. This can be used to test more values and more features when needed.
 
 ``npf-compare`` can also be given repositories with a tag, e.g. ``npf-compare "iperf+feature:IPerf with the feature tag" "iperf:CPU=8:IPerf with 8 CPU" --test ...``
@@ -255,7 +255,7 @@ Multiple constants can be used in the files and scripts sections:
 ``NPF_REPO``
     Path to the repository under test
 ``NPF_TESTSCRIPT_PATH``
-    Path to the location of the test script path
+    Path to the folder of the test script
 ``NPF_RESULT_PATH``
     Path to the result folder (by default when the command is run, or as passed by the --result-path option)
 ``NPF_OUTPUT_PATH``
@@ -263,9 +263,9 @@ Multiple constants can be used in the files and scripts sections:
 ``NPF_NODE_ID``
     Index of the node used for the same role, in general 1
 ``NPF_NODE_MAX``
-    Number of nodesrunning the same role, in general 1
+    Number of nodes running the same role, in general 1
 ``NPF_MULTI_ID``
-    Index of the script when running multiple times the same script on each node using the "multi" feature, in general 1
+    Index of the script when running multiple times the same script on each node using the "multi" feature to run multiple time the same script on each role (see :ref:`multi`), in general 1
 ``NPF_MULTI_MAX``
     Number of multi as given to the cluster config (default is 1)
 
