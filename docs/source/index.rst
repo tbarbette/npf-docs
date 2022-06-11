@@ -4,7 +4,7 @@
 Network Performance Framework (NPF) documentation
 =================================================
 
-Run performance tests on network software by running snippets of bash scripts on a cluster
+`NPF <https://github.com/tbarbette/npf>`_ runs performance tests on network software by running snippets of bash scripts on a cluster
 following a simple definition script. For instance, the following test script for iPerf3 throughput (omitting graph styling options):
 
 .. code-block:: bash
