@@ -38,7 +38,7 @@ To produce the following graph:
 Test scripts defines variables for which NPF runs tests to evaluate their combinations
 and report performance results.
 
-NPF will output the results in configurable :ref:`cluster <CSV files>`.
+NPF will output the results in configurable :ref:`CSV files <cluster>`.
 
 NPF builds graphs and computes statistical result for each test 
 showing the difference between variables values, different softwares, or the evolution of

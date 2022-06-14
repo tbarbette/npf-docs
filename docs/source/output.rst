@@ -14,7 +14,7 @@ This is created with `--single-output filename.csv`
 
 The following is the output of `npf-compare.py --test integration/math.npf --single-output test.csv`, a test script that prints the input vairable "N", its logarithm and square product for N=[1-32] :
 
-.. code-block:: csv
+.. csv-table:: test.csv
 
    index,build,test_index,N,N,LOG,EXP,run_index
    0,Local,0,1,1.0,0.0,2.0,0
@@ -26,6 +26,7 @@ The following is the output of `npf-compare.py --test integration/math.npf --sin
    95,Local,31,32,32.0,3.47,4294967296.0,2
 
 The columns are:
+
    index: An index for the line
    build: The name of the build/repository, "Local" is the default name for no repository. If you used `npf-compare "local:Serie"` the name woult be Serie
    test_index: For each build, the index of the combination of variable.
@@ -64,51 +65,25 @@ The --output lines will create one CSV per output type, just before generating t
 
 With --output-columns the list of columns can be selected among:
 
-   mean/average: The mean value of all runs
-   min: The min value of all runs 
-   max: The max values of all runs
-   perc[0-9]+: The configurable percentile for all runs
-   med/median/perc50: The median value for all runs
-   std: The standard deviation
-   nres/n: The number of runs
-   first: The first value of the runs
-   last: The last value of the runs
-   all: One column per value of the run
+   * mean/average: The mean value of all runs
+   * min: The min value of all runs
+   * max: The max values of all runs
+   * perc[0-9]+: The configurable percentile for all runs
+   * med/median/perc50: The median value for all runs
+   * std: The standard deviation
+   * nres/n: The number of runs
+   * first: The first value of the runs
+   * last: The last value of the runs
+   * all: One column per value of the run
 
 The following is the output of `npf-compare.py --test integration/math.npf --output test.csv --output-columns x mean median`, using the same test script as above :
 
-**test/LOG.csv**
-.. code-block:: csv
-   
+.. csv-table:: test/LOG.csv
+
    1 0.0 0.0
    2 0.69 0.69
    3 1.1 1.1
-   4 1.39 1.39
-   5 1.61 1.61
-   6 1.79 1.79
-   7 1.95 1.95
-   8 2.08 2.08
-   9 2.2 2.2
-   10 2.3 2.3
-   11 2.4 2.4
-   12 2.48 2.48
-   13 2.56 2.56
-   14 2.64 2.64
-   15 2.7099999999999995 2.71
-   16 2.77 2.77
-   17 2.83 2.83
-   18 2.89 2.89
-   19 2.94 2.94
-   20 3.0 3.0
-   21 3.0400000000000005 3.04
-   22 3.09 3.09
-   23 3.14 3.14
-   24 3.18 3.18
-   25 3.22 3.22
-   26 3.26 3.26
-   27 3.2999999999999994 3.3
-   28 3.33 3.33
-   29 3.3699999999999997 3.37
+   [...]
    30 3.4 3.4
    31 3.43 3.43
    32 3.47 3.47
