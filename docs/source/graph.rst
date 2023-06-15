@@ -105,7 +105,7 @@ Data transformation
 - **graph_map** ={regex:value} Replace a value matching a regex by another. Useful with text results. It is a reduced of what the `perf-class <https://pypi.org/project/perf-class/>`_ project proposes.
 - **graph_series_prop** =true/false Divide all results by the results of the first serie. Hence graphs will be a percentage of relative to the first series. Eg if the first serie is "software 1" it will be removed from the graph and the other series will show how much better software 2, ... did against software 1. Alternative value : =integer, e.g. =100 shortcut to multiply the result by the given value to have a proportion in, e.g. percents.
 - **graph_cross_reference**, {Y:VARIABLE}, change the graph where the Y axis is Y (the result name) to have the X variable being another variable
-- **var_aggregate**, {VARIABLE:method}, aggregates all values for a given variable. If "method" is "all", all results will be put in a single variable value like if they were all points for the same run. You can also use "median", "average", ... to combine results for all variables using those mathematical methods.
+- **var_aggregate**, {VARIABLE:method}, aggregates all values for a given variable. If "method" is "all", all results will be put in a single variable value like if they were all points for the same run. You can also use "median", "average", ... to combine results for all variables using those mathematical methods. See below for an example.
   
 Splitting graphs in sub-plots
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -114,4 +114,7 @@ Splitting graphs in sub-plots
 - **graph_subplot_variable** =X will make one sub-plot for every value of the variable X. In general this is to be used with `graph_variables_as_series` to explode one other variable as serie and display more dimensions.
 - **graph_display_statics** =true/false Will add a subplot to show the value of static variables. Useful to exchange graphs with colleages knowing what are the fixed parameters for all the graph you show. But the results is somehow horrible.
 - **graph_text** =string Add some texts under all graphs.
+
+Examples for var_aggregate
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 

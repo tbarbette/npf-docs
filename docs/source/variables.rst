@@ -72,7 +72,7 @@ See the :ref:`graphing page<graph>` to style the graph and change units, axis na
 Experimental design
 ===================
 
-NPF allows to define covariables and then use Experimental Design to
+NPF allows to define covariables and then use a WSP experimental design to
 sample values in a given range.
 
 .. code-block:: bash
@@ -94,8 +94,8 @@ A covariable makes variables move together:
 
 The above example leads to 10 tests, (A=1,B=1), (A=2, B=2) ... (A=10, B=10).
 
-The ``#`` parameter enables to define variables with values drawn from ranges
-with a minimum distance between combinations using Experimental Design
+The ``#`` parameter defines variables with values drawn from ranges
+with a minimum distance between combinations using the WSP algorithm
 (see J. Santiago, M. Claeys-Bruno, and M. Sergent. Construction of Space-Filling Designs using WSP Algorithm for High Dimensional Spaces. Chemometrics and Intelligent Laboratory Systems, 113, 2012.), such as this:
 
 .. code-block:: bash

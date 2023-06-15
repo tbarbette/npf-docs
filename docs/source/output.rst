@@ -10,9 +10,9 @@ On top of `graph <graphs>`_ NPF has two output modules to extract the generated 
 
 Single CSV file
 ===============
-This is created with `--single-output filename.csv`
+This is created with *--single-output filename.csv*
 
-The following is the output of `npf-compare.py --test integration/math.npf --single-output test.csv`, a test script that prints the input vairable "N", its logarithm and square product for N=[1-32] :
+The following is the output of *npf-compare.py --test integration/math.npf --single-output test.csv*, a test script that prints the input vairable "N", its logarithm and square product for N=[1-32] :
 
 .. csv-table:: test.csv
 
@@ -28,13 +28,13 @@ The following is the output of `npf-compare.py --test integration/math.npf --sin
 The columns are:
 
    index: An index for the line
-   build: The name of the build/repository, "Local" is the default name for no repository. If you used `npf-compare "local:Serie"` the name woult be Serie
+   build: The name of the build/repository, "Local" is the default name for no repository. If you used *npf-compare "local:Serie"* the name woult be Serie
    test_index: For each build, the index of the combination of variable.
    N: This is the input variable "N"
    N: This is the output result-type "N"
    LOG: This is the output result type "LOG"
    EXP: This is the output result type "EXP"
-   run_index: For each test_index, the index of the run. Goes from 0 to `--config n_runs=X`
+   run_index: For each test_index, the index of the run. Goes from 0 to *--config n_runs=X*
 
 
 Example to open the file in python and compute the mean for each variable:
@@ -76,7 +76,7 @@ With --output-columns the list of columns can be selected among:
    * last: The last value of the runs
    * all: One column per value of the run
 
-The following is the output of `npf-compare.py --test integration/math.npf --output test.csv --output-columns x mean median`, using the same test script as above :
+The following is the output of *npf-compare.py --test integration/math.npf --output test.csv --output-columns x mean median*, using the same test script as above :
 
 .. csv-table:: test/LOG.csv
 
