@@ -32,7 +32,7 @@ Graphing options
 
 The graph can be tweaked using many options, and the data can also be transformed using multiple tools to better display results. Data transformation will also affect the output CSV. In any case none of these options affect the values in the data cache, so you may try different tweaks without risks.
 
-All the following options can be added to the ``%config`` section of the test script, or after the ``\-\-config` parameter on the command line of any of the tools.
+All the following options can be added to the ``%config`` section of the test script, or after the ``\-\-config`` parameter on the command line of any of the tools.
 
 * var prefix generally affect variables. It generally takes a list of variables, or a dict of variables->parameters.
 * graph prefix only affect the graph, styling ,etc. The CSV data will not be changed.

@@ -20,6 +20,7 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.intersphinx',
+    'sphinx_tabs.tabs'
 ]
 
 intersphinx_mapping = {
@@ -29,6 +30,8 @@ intersphinx_mapping = {
 intersphinx_disabled_domains = ['std']
 
 templates_path = ['_templates']
+
+sphinx_tabs_valid_builders = ['linkcheck']
 
 # -- Options for HTML output
 

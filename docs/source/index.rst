@@ -10,37 +10,131 @@ following a simple definition script. For instance, the following test script fo
 .. code-block:: bash
 
    %info
-   IPerf3 Throughput Experiment
+   IPerf 2 Throughput Experiment
+
+   %config
+   n_runs=5
+   var_names={PARALLEL:Number of parallel connections,WINDOW:Window size (kB),THROUGHPUT:Throughput}
 
    %variables
    PARALLEL=[1-8]
-   ZEROCOPY={:without,-Z:with}
+   WINDOW={16,512}
+   TIME=2
 
    %script@server
-   iperf3 -s &> /dev/null
+   iperf -s
 
    %script@client delay=1
-   result=$(iperf3 -f k -t 2 -P $PARALLEL $ZEROCOPY -c ${server:0:ip} | tail -n 3 | grep -ioE "[0-9.]+ [kmg]bits")
+   //Launch the program, copy the output to a log
+   iperf -c ${server:0:ip} -w ${WINDOW}k -t $TIME -P $PARALLEL 2>&1 | tee iperf.log
+   //Parse the log to find the throughput
+   result=$(cat iperf.log | grep -ioE "[0-9.]+ [kmg]bits" | tail -n 1)
+   //Give the throughput to NPF through stdout
    echo "RESULT-THROUGHPUT $result"
+
 
 Can be run with the following command line:
 
 .. code-block:: bash
 
-   npf-run --test tests/tcp/01-iperf.npf
+   npf-run --test tests/tcp/01-iperf.npf --cluster client=machine01.cluster.com server=machine02.cluster.com
 
 To produce the following graph:
 
-.. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/01-iperf-THROUGHPUT.png
-   :width: 400
-   :alt: Result for tests/tcp/01-iperf.np
+.. tabs::
+
+   .. tab:: Default
+
+      This is the default graph, with almost no configuration, generated out of the data automatically
+      
+      .. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/iperf2-THROUGHPUT.svg
+         :width: 500
+         :alt: Result for tests/tcp/01-iperf.npf
+
+   .. tab:: Boxplot
+
+      Forcing the graph type to boxplot
+
+      .. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/iperf2-THROUGHPUT-boxplot.svg
+         :width: 500
+         :alt: Result for tests/tcp/01-iperf.npf
+
+   .. tab:: Barplot
+
+      Forcing the graph type to barplot
+
+      .. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/iperf2-THROUGHPUT-barplot.svg
+         :width: 500
+         :alt: Result for tests/tcp/01-iperf.npf
+
+   .. tab:: [...]
+
+      See the :ref:`Graphing page <graph>`.
+
 
 Test scripts defines variables for which NPF runs tests to evaluate their combinations
 and report performance results.
 
-NPF will output the results in configurable :ref:`CSV files <cluster>`.
+NPF will output the results in configurable :ref:`CSV files <cluster>`. Below, two example of CSV outputs:
 
-NPF builds graphs and computes statistical result for each test 
+.. tabs::
+   
+   .. tab:: Single output
+      
+      The format given with ``--single-output`` is inteded to use Pandas and post-process the data by yourself. It gives you the result of every runs, for every variables.
+
+      .. csv-table:: CSV example
+         :header-rows: 1
+
+         index,build,test_index,PARALLEL,WINDOW,TIME,THROUGHPUT,run_index
+         0,local,0,1,16,2,6743098654.72,0
+         1,local,0,1,16,2,9899899617.28,1
+         2,local,0,1,16,2,9320079032.32,2
+         3,local,0,1,16,2,10350871183.36,3
+         4,local,0,1,16,2,9212704849.92,4
+         5,local,1,2,16,2,6506875453.44,0
+         6,local,1,2,16,2,16965120819.2,1
+         7,local,1,2,16,2,16857746636.8,2
+         8,local,1,2,16,2,17609365913.6,3
+         9,local,1,2,16,2,16642998272.0,4
+         10,local,2,3,16,2,20937965568.0,0
+         11,local,2,3,16,2,19864223744.0,1
+         ...
+
+   .. tab:: Multiple output
+
+      This format is more configurable, to give CSV per output variable, and one CSV per series. This one is for the iperf throughput, exported with ``--output --output-columns x mean std ``
+
+      There will be one file for ``WINDOW=16`` and one for ``WINDOW=512``
+      
+      .. csv-table:: WINDOW=16
+         :header-rows: 0
+         :delim: space
+
+         1 9105330667.52 1250639608.3643892
+         2 14916421419.008001 4217093640.431153
+         3 22312355102.719997 2218673850.7652254
+         4 28475633172.48 2547643401.7214246
+         5 33135672688.640003 4197547808.1855946
+         6 37194416783.36 3457115197.0040603
+         7 44560285696.0 6039356316.673344
+         8 47223165419.520004 7102751440.813944
+
+      .. csv-table:: WINDOW=512
+         :header-rows: 0
+         :delim: space
+
+         1 25383256719.36 3269962568.948725
+         2 55641301319.68001 10321647319.401031
+         3 68397354188.8 8960180907.481855
+         4 91847875624.95999 2907918066.8286467
+         5 96851512524.8 3153219791.852363
+         6 99192269701.12 873368689.2990192
+         7 99514392248.32 1317512283.5617392
+         8 98827197480.96 2457532097.396189
+
+
+NPF automatically builds graphs, computes statistical result for each test 
 showing the difference between variables values, different softwares, or the evolution of
 performances through commits.
 

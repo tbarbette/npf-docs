@@ -35,6 +35,7 @@ Variables can be omitted or included based on a tag, given by a ``repo`` or the 
 These variables are prefixed in the ``%variables`` section with a tag and a colon.
 
 For instance:
+
 ``cpu:CPU={0,1}``
     When the ``cpu`` tag is given, ``$CPU`` take values 0 and 1. Otherwise, ``$CPU`` is omitted.
 
@@ -106,7 +107,7 @@ with a minimum distance between combinations using the WSP algorithm
         C=[1-2000000#]
     }
 
-Non-covariated variables would result `2M*10K*1K=10^13` runs. A range with the ``#``parameter and no stop samples 95 combinations of values out of the defined range.
+Non-covariated variables would result ``2M*10K*1K=10^13`` runs. A range with the ``#``parameter and no stop samples 95 combinations of values out of the defined range.
 The values are sampled so that the distance between all points in A, B and C is optimal (as
 defined in WSP). Also, these values are sampled deterministically, so the experiments are reproducibles.
 
