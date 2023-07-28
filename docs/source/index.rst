@@ -45,11 +45,12 @@ To produce the following graph:
 
    .. tab:: Default
 
-      This is the default graph, with almost no configuration, generated out of the data automatically
+      This is the default graph, with almost no configuration, generated out of the data automatically. 
+      The default is not always a lineplot. NPF selected a lineplot because of the number of variables and points.
       
       .. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/iperf2-THROUGHPUT.svg
          :width: 500
-         :alt: Result for tests/tcp/01-iperf.npf
+         :alt: Result for tests/tcp/01-iperf.npf, by default it gives a lineplot
 
    .. tab:: Boxplot
 
@@ -57,7 +58,7 @@ To produce the following graph:
 
       .. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/iperf2-THROUGHPUT-boxplot.svg
          :width: 500
-         :alt: Result for tests/tcp/01-iperf.npf
+         :alt: Result for tests/tcp/01-iperf.npf with a boxplot
 
    .. tab:: Barplot
 
@@ -65,7 +66,15 @@ To produce the following graph:
 
       .. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/iperf2-THROUGHPUT-barplot.svg
          :width: 500
-         :alt: Result for tests/tcp/01-iperf.npf
+         :alt: Result for tests/tcp/01-iperf.npf with a barplot
+
+   .. tab:: Horizontal barplot
+
+      Forcing the graph type to be an horizontal barplot
+
+      .. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/iperf2-THROUGHPUT-barh.svg
+         :width: 500
+         :alt: Result for tests/tcp/01-iperf.npf with an horizontal barplot
 
    .. tab:: [...]
 
@@ -138,10 +147,37 @@ NPF automatically builds graphs, computes statistical result for each test
 showing the difference between variables values, different softwares, or the evolution of
 performances through commits.
 
+.. code-block::
+
+   Feature importance:
+      PARALLEL : 0.3966
+      WINDOW : 0.6034
+
+   Max:
+      PARALLEL = 7, WINDOW = 512, TIME = 2 : 99514392248.32
+   Min:
+      PARALLEL = 1, WINDOW = 16, TIME = 2 : 9105330667.52
+
+   Means and std/mean per variables :
+   PARALLEL:
+      1 : 17244293693.44
+      2 : 35278861369.34
+      3 : 45354854645.76
+      4 : 60161754398.72
+      5 : 64993592606.72
+      6 : 68193343242.24
+      7 : 72037338972.16
+      8 : 73025181450.24
+
+   WINDOW:
+      16 : 29615410118.66
+      512 : 79456894976.00
+
 NPF can execute tests on a computer cluster, running your tests
 in multiple configurations rapidly and on relevant hardware.
 
 Test scripts are easy to write and share.
+
 We encourage users to share their ``.npf`` scripts along with their code 
 to allow other users to reproduce their results and graphs.
 
