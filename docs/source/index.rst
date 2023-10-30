@@ -144,10 +144,9 @@ NPF will output the results in configurable :ref:`CSV files <cluster>`. Below, t
 
 
 NPF automatically builds graphs, computes statistical result for each test 
-showing the difference between variables values, different softwares, or the evolution of
-performances through commits.
+showing the importance of each factor, the min/max values, or average for each factor levels.
 
-.. code-block::
+.. code-block:: text
 
    Feature importance:
       PARALLEL : 0.3966
@@ -178,7 +177,7 @@ in multiple configurations rapidly and on relevant hardware.
 
 Test scripts are easy to write and share.
 
-We encourage users to share their ``.npf`` scripts along with their code 
+Test scripts are easy to write and share. We encourage users to share their ``.npf`` scripts along with their code
 to allow other users to reproduce their results and graphs.
 
 The documentation describes first the basic :doc:`usage <usage>` and :ref:`installation <installation>` of NPF.

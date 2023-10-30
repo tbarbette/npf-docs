@@ -111,7 +111,7 @@ Splitting graphs in sub-plots
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - **graph_subplot_results** ={THROUGHPUT+LATENCY:2} combine two results in a single figure. If graph_subplot_type is subplot, then it will simply combine the graphs in a single file using the given number of columns. If the subplot_type is axis, it will use a dual-axis plot. Only the last variable will be on the second axis, so one may combine multiple variables on the same axis, like TX and RX throughput on the left axis, and the latency on the right axis?
-- **graph_subplot_variable** =X will make one sub-plot for every value of the variable X. In general this is to be used with `graph_variables_as_series` to explode one other variable as serie and display more dimensions.
+- **graph_subplot_variable** =X will make one sub-plot for every value of the variable X. In general this is to be used with `graph_variables_as_series` to explode one other variable as serie and display more dimensions. Use `graph_max_cols` to limit the number of columns. E.g. to have vertical subplots set `graph_max_cols=1`.
 - **graph_display_statics** =true/false Will add a subplot to show the value of static variables. Useful to exchange graphs with colleages knowing what are the fixed parameters for all the graph you show. But the results is somehow horrible.
 - **graph_text** =string Add some texts under all graphs.
 
