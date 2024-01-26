@@ -79,16 +79,23 @@ The following example shows how multiple client can be configured using differen
 Running the same script multiple times on each machine
 ------------------------------------------------------
 
-It can be useful to run the same script multiple times in parallel on each machines.
+It can be useful to run the same script multiple times in parallel on each machine of the same role.
 For instance, when the software does not support multi-threading, or to use multiple network namespace.
 
 To run 16 times the "client" scripts, use `--cluster client=user01@server01.network.edu,multi=16`.
 Similarly to running the script on multiple nodes, `${NPF_MULTI_MAX}` will be the given number of times scripts should run, and `${NPF_MULTI_ID}` an increasing ID starting from 1 to $NPF_MULTI_MAX for each scripts.
 
+The script command must be appended with "-*" to have the test run for each of the multi value, e.g.:
+
+.. code-block::
+
+  %script@client-*
+  echo "Script $NPF_MULTI_ID over $NPF_MULTI_MAX"
+
 One can also append `mode=netns` to run each scripts inside different network namespaces.
 I.e. `--cluster client=user01@server01.network.edu,multi=16,mode=netns`.
 This is equivalent of running every of the "client" scripts with `ip netns exec npfns$N ...` with N varying from 1 to 16.
-The namsepace must be created in an init script with "ip netns add npfns${NPF_MULTI_ID}".
+The namsepace must be created in an init script with `Ip netns add npfns${NPF_MULTI_ID}`.
 Check the `modules/wrk-nsdelay.npf` example that supports both multiple nodes and the "multi" feature as an example to simulate many different clients using a per-namespace link delay simulation using netem.
 
 

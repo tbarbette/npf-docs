@@ -243,6 +243,25 @@ To do more, one can use the %pyexit section to interpret the results :
 All Python code are accepted, so one may compute variance among
 multiple results, etc. Name space results are available under ``KIND_RESULTS``.
 
+Here's an example to take all values over time of a namespace
+result and combine it as a list of value for a single result. Typically a throughput is shown
+every second with a series of results like "TIME-YYY-RESULT-THROUGHPUT XXX". The following code will
+create a combination of all XXX values as "THROUGHPUT-SUM", that can then be used in a boxplot.
+
+.. code-block:: python
+
+    %pyexit
+
+    for kind,results in KIND_RESULTS.items():
+        d={}
+        for time, kv in results.items():
+            for k,v in kv.items():
+            d.setdefault(k,[])
+            d[k].append(v)
+        for k,vs in d.items():
+            RESULTS[k + '-SUM'] = vs[8:-1]
+
+
 NFP constants
 =============
 
