@@ -18,15 +18,12 @@ A variable can describe its values using multiple schemes:
     All values starting from 64 multiplied per 2 up to 1024
 ``LENGTH={60,64,128,256,1024,1496}``
     A list of values
-``LENGTH=EXPAND(Hello $VARIABLE)``
-    A list of string starting with "Hello" for each value of the previously defined ``$VARIABLE``. When ``VARIABLE=[1-10]`` then ``LENGTH`` is ``{Hello 1,Hello 2, ..., Hello 10}``.
 ``LENGTH=RANDOM(A,B)``
     A pseudo-random number between A and B, which can be previously defined variables. 
     A value is generated for each execution and kept for all runs of a given execution.
-``LENGTH=HEAD(A,$VARIABLE[,JOIN])``
-    Takes the first A (A can be a previously define variable itself) values of ``$VARIABLES`` and joins them with the last argument.
-``LENGTH=IF(COND,A,B)``
-    Evaluates COND, and return A if COND is true or B if it isn't.
+``LENGTH=EXPAND(Hello $VARIABLE)``
+    A list of string starting with "Hello" for each value of the previously defined ``$VARIABLE``. When ``VARIABLE=[1-10]`` then ``LENGTH`` is ``{Hello 1,Hello 2, ..., Hello 10}``.
+
 
 Tags
 ====

@@ -36,8 +36,10 @@ You can either connect as root to the cluster (see the :ref:`cluster` section) o
 
 File-sharing (optional)
 -----------------------
-Use either a NFS shared mount on all nodes or sshfs to mount the local NPF folder on all nodes. The path to the shared NPF root can be different on each node, see the cluster section below.
-If this is not the case, the dependencies (software built by NPF) will be sent to all nodes that will use them in the corresponding scripts through SSH, but it is slower.
+In general, NPF is used to run one or more scripts and programs over multiple machines.
+By default, NPF assumes the current folder is synchronized on all machines. For instance, using NFS or sshfs.
+NPF can also copy files by itself over NFS is there is no file sharing in place.
+The :ref:`cluster` section details way to define the use of file sharing and synchronize different paths.
 
 
 The big picture
