@@ -101,12 +101,52 @@ Data transformation
 - **graph_series_as_variables** =true/false Will convert the series as a variable. This is useful in npf-compare to consider the different tags/software you used as a variable, and use something else as a serie.
 - **graph_variables_as_series** ={VAR1,VAR2} list of variables to use as series. If multiple, or a serie already exists, it will do the cross product of the variables. Usefull to pass "trailing" dynamic variables as more lines in a lineplot.
 - **result_as_variables** ={COUNT-Q(.*):QUEUE-COUNT} Group multiple results matching a regex as a single variable. Eg if you run a single test that outputs multiple statistics for "the same thing", like the number of bytes per NIC queues, you will have your scipt display RESULT-COUNT-Q0 A, RESULT-COUNT-Q1 B,  ... and this example will make a variable QUEUE with all the observed values, and create a new result type called "COUNT".
-- **var_divider**, {'result':1}) Divide the variables or results by the given value.
+- **var_divider**, {'result':1} Divide the variables or results by the given value.
 - **graph_map** ={regex:value} Replace a value matching a regex by another. Useful with text results. It is a reduced of what the `perf-class <https://pypi.org/project/perf-class/>`_ project proposes.
 - **graph_series_prop** =true/false Divide all results by the results of the first serie. Hence graphs will be a percentage of relative to the first series. Eg if the first serie is "software 1" it will be removed from the graph and the other series will show how much better software 2, ... did against software 1. Alternative value : =integer, e.g. =100 shortcut to multiply the result by the given value to have a proportion in, e.g. percents.
 - **graph_cross_reference**, {Y:VARIABLE}, change the graph where the Y axis is Y (the result name) to have the X variable being another variable
 - **var_aggregate**, {VARIABLE:method}, aggregates all values for a given variable. If "method" is "all", all results will be put in a single variable value like if they were all points for the same run. You can also use "median", "average", ... to combine results for all variables using those mathematical methods. See below for an example.
   
+
+Graph filtering
+^^^^^^^^^^^^^^^
+- **graph_filter_by** = {variable:filter} In a lineplot, changes a line by a dashed-line according to a filter.
+
+Example:
+
+`graph_filter_by={THROUGHPUT:DROPPEDPC<10}`
+
++---------+----------------+-------------+
+|         | **Throughput** | **Dropped** |
++=========+================+=============+
+| **10**  | 10.0           | 0.0         |
++---------+----------------+-------------+
+| **20**  | 20.0           | 0.0         |
++---------+----------------+-------------+
+| **30**  | 30.0           | 0.0         |
++---------+----------------+-------------+
+| **40**  | 40.0           | 0.0         |
++---------+----------------+-------------+
+| **50**  | 50.0           | 0.0         |
++---------+----------------+-------------+
+| **60**  | 57.0           | 5.0         |
++---------+----------------+-------------+
+| **70**  | 63.0           | 10.0        |
++---------+----------------+-------------+
+| **80**  | 68.0           | 15.0        |
++---------+----------------+-------------+
+| **90**  | 72.0           | 20.0        |
++---------+----------------+-------------+
+| **100** | 75.0           | 25.0        |
++---------+----------------+-------------+
+
+Will give the following graphs that underlines that a certain part of the throughput graph is representing values that include packets being dropped. It conveys to the reader that while that line achieves a higher throughput, dropping packets is unnacceptable in most conditions.
+
+.. image:: https://github.com/tbarbette/npf/blob/master/doc/filter-THROUGHPUT.png?raw=true)[Example of filter_by]
+   :alt: Example of graph with graph_filter_by
+
+The NPF script example is available .. `in integration/filter.npf <https://github.com/tbarbette/npf/blob/master/integration/filter.npf>`_.
+
 Splitting graphs in sub-plots
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -114,7 +154,3 @@ Splitting graphs in sub-plots
 - **graph_subplot_variable** =X will make one sub-plot for every value of the variable X. In general this is to be used with `graph_variables_as_series` to explode one other variable as serie and display more dimensions. Use `graph_max_cols` to limit the number of columns. E.g. to have vertical subplots set `graph_max_cols=1`.
 - **graph_display_statics** =true/false Will add a subplot to show the value of static variables. Useful to exchange graphs with colleages knowing what are the fixed parameters for all the graph you show. But the results is somehow horrible.
 - **graph_text** =string Add some texts under all graphs.
-
-Examples for var_aggregate
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
