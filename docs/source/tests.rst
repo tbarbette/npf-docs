@@ -412,7 +412,7 @@ Multiple constants can be used in the files and scripts sections:
 ``NPF_NODE_MAX``
     Number of nodes running the same role, in general 1
 ``NPF_MULTI_ID``
-    Index of the script when running multiple times the same script on each node using the "multi" feature to run multiple time the same script on each role (see :ref:`multi`), in general 1
+    Index of the script when running multiple times the same script on each node using the "multi" feature (see :ref:`cluster`) to run multiple time the same script on each role (see :ref:`multi`), in general 1
 ``NPF_MULTI_MAX``
     Number of multi as given to the cluster config (default is 1)
 
@@ -422,7 +422,7 @@ Test scripts shipped with NPF
 Generic
 -------
 
-Generic tests are used to do black-box testing, they are L2/L3
+Generic tests are used to do blackbox testing, they are L2/L3
 generators, packets trace replayers and HTTP generators.
 
 They are generic in the sense that they can be used to
