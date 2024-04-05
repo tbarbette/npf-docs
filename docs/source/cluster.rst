@@ -85,7 +85,7 @@ For instance, when the software does not support multi-threading, or to use mult
 To run 16 times the "client" scripts, use `--cluster client=user01@server01.network.edu,multi=16`.
 Similarly to running the script on multiple nodes, `${NPF_MULTI_MAX}` will be the given number of times scripts should run, and `${NPF_MULTI_ID}` an increasing ID starting from 1 to $NPF_MULTI_MAX for each scripts.
 
-The script command must be appended with "-*" to have the test run for each of the multi value, e.g.:
+The script command must be appended with `-*` to have the test run for each of the multi value, e.g.:
 
 .. code-block::
 

@@ -86,7 +86,7 @@ These are optional and NPF uses a repository named "local" by default, which do 
    When some familiarity with NPF is gained, start using its dependencies chains and build process.
 
 NPF uses a **cache** of the results it obtains. 
-When the same experiment for the same variables and version of the repository is ran, the test is not ran but the values from the cache are used instead.
+When the same experiment for the same variables and version of the repository is run again, the test is not excuted but rather the values from the cache are used instead.
 To ignore the cache, use ``--force-retest``.
 
 Limitations

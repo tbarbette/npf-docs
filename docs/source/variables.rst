@@ -70,6 +70,8 @@ NPF also produces the two following graphs in result:
 
 See the :ref:`graphing page<graph>` to style the graph and change units, axis names, etc...
 
+.. _aggregate:
+
 Experimental design
 ===================
 
@@ -107,13 +109,15 @@ with a minimum distance between combinations using the WSP algorithm
         C=[1-2000000#]
     }
 
-Non-covariated variables would result ``2M*10K*1K=10^13`` runs. A range with the ``#``parameter and no stop samples 95 combinations of values out of the defined range.
+Non-covariated variables would result ``2M*10K*1K=10^13`` runs. A range with the ``#`` parameter and no stop samples 95 combinations of values out of the defined range.
 The values are sampled so that the distance between all points in A, B and C is optimal (as
 defined in WSP). Also, these values are sampled deterministically, so the experiments are reproducibles.
 
 Our example still defines 3 variables, and the resulting
 plot may not be appropriate by representing the evolution of these variables. 
 In this case, the ``var_aggregate`` configuration option can be used with a list:
+
+
 
 .. code-block:: bash
 

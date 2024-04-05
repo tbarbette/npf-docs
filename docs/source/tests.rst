@@ -91,6 +91,92 @@ This example also specifies additional arguments.
 The first script starts 5 seconds after the test execution has begun (``delay=5``), and its completion does not halt the test execution (``autokill=false``). 
 The second script is executed when the ``finished`` event is reached (``waitfor=finished``) and with elevated priviledges (``sudo=true``).
 
+Handling multiple results
+~~~~~~~~~~~~~~~~~~~~~~~~~
+NPF extracts all results prefixed by ``RESULT[-VARNAME]``.
+
+If there are multiple occurences of the same `VARNAME`, NPF will by default overwrite values and keep only the last one.
+
+There are 2 other possible actions: appending the results as a list of possible values, or directly summing all values.
+
+When ``VARNAME``
+is in the list ``result_add={VARNAME,...}`` given either in the `%config` section or `--config` parameter, values will
+be summed together.
+If `VARNAME`` is in the ``result_append={VARNAME,...}`` config list, results
+will be append as a list.
+In a plot, all values will be used to show a standard deviation.
+
+Let's follow this sample output of an experiment:
+
+.. code-block::
+
+    RESULT-THROUGHPUT 6
+    RESULT-THROUGHPUT 10
+    RESULT-THROUGHPUT 26
+
+Here's the result for all possible modes:
+
+.. tabs::
+
+   .. tab:: Default
+
+      .. image:: https://github.com/tbarbette/npf/raw/master/doc/example_multiple_result_default-THROUGHPUT.png?raw=true
+         :width: 500
+
+   .. tab:: Add
+
+      .. image:: https://github.com/tbarbette/npf/raw/master/doc/example_multiple_result_add-THROUGHPUT.png?raw=true
+         :width: 500
+
+   .. tab:: Append
+
+      .. image:: https://github.com/tbarbette/npf/raw/master/doc/example_multiple_result_append-THROUGHPUT.png?raw=true
+         :width: 500
+
+.. _namespaces:
+
+Namespaces
+~~~~~~~~~~
+
+A single run of a single experiment might produce a series of values.
+Typically, the throughput over time for the duration of the whole experiment.
+
+
+Consider the following output of an experiment:
+
+.. code-block::
+
+    TIME-1001-RESULT-THROUGHPUT 7 pps
+    TIME-1002-RESULT-THROUGHPUT 8 pps
+    TIME-1003-RESULT-THROUGHPUT 9 pps
+    TIME-1004-RESULT-THROUGHPUT 6 pps
+    RESULT-RX 30
+    RESULT-TX 28
+
+In that experiment, there was 30 packets received and 28 sent.
+However the operator also exported the throughput in `pps` every second.
+RX and TX are single value for the whole experiment's run. But there are 4 values for the THROUGHPUT that must stay associated with their TIME.
+
+.. tabs::
+
+   .. tab:: Throughput
+
+      .. image:: https://github.com/tbarbette/npf/raw/master/doc/example_namespaces-THROUGHPUT.svg?raw=true
+         :width: 500
+
+   .. tab:: Throughput (synced)
+
+      With ``--config var_synced={time}`` to synchronize the values upon the first one (note the X axis)
+
+      .. image:: https://github.com/tbarbette/npf/raw/master/doc/example_namespaces_synced-THROUGHPUT.svg?raw=true
+         :width: 500
+
+
+
+The use of namespace is not restricted to time. For instance one might want to extract the number of packets received per CPU cores using a format like `CPU-XXX-RESULT-NBPACKETS YYY`.
+This will automatically create an histogram of the number of packets per core for the experiment.
+
+
 Variables
 ---------
 
@@ -226,12 +312,9 @@ In this example, a ``clock.npf`` module is defined and imported for the ``server
 pyexit
 ------
 
-NPF extracts all results prefixed by ``RESULT[-VARNAME]``. When ``VARNAME``
-is in ``result_add={...}`` config list, occurences of the same ``VARNAME`` will
-be added together, if it is in the ``result_append`` config list, results
-will be append as a list, else occurences of ``VARNAME`` overwrite each others.
+A python script can be executed after each test runs.
 
-To do more, one can use the %pyexit section to interpret the results :
+One can use the %pyexit section to transform the results:
 
 .. code-block:: python
 
@@ -240,13 +323,58 @@ To do more, one can use the %pyexit section to interpret the results :
     loss=RESULTS["RX"] - RESULTS["TX"]
     RESULTS["LOSS"]=loss
 
-All Python code are accepted, so one may compute variance among
-multiple results, etc. Name space results are available under ``KIND_RESULTS``.
+This can be used to compute some intermediate results, compute variance among
+multiple results, etc.
+Two dictionnaries are exposed to access the results of the experiment.
+As in the example above, `RESULTS` allow to access single-value results from the experiment. For instance, a valid output for the sample above could be:
 
-Here's an example to take all values over time of a namespace
-result and combine it as a list of value for a single result. Typically a throughput is shown
-every second with a series of results like "TIME-YYY-RESULT-THROUGHPUT XXX". The following code will
-create a combination of all XXX values as "THROUGHPUT-SUM", that can then be used in a boxplot.
+.. code-block::
+
+    RESULT-RX 800
+    RESULT-TX 1000
+
+In a CSV or a graph, the new `LOSS` result will be shown/drown.
+
+:ref:`namespaces` results are available under ``KIND_RESULTS``.
+It is a dictionnary of the namespace as key, and a dictionnary including a result in the format presented above for each iteration of the variable in the namespace.
+
+Here's an example to take all values over time of a namespace.
+Typically a throughput is shown
+every second with a series of results like `TIME-YYY-RESULT-THROUGHPUT XXX`, with `YYY` being an increasing time and XXX the throughput at value.
+
+For a result such as:
+
+.. code-block::
+
+    TIME-1-RESULT-THROUGHPUT 7
+    TIME-2-RESULT-THROUGHPUT 8
+    TIME-3-RESULT-THROUGHPUT 9
+    TIME-4-RESULT-THROUGHPUT 6
+
+The dictionnary will be:
+
+.. code-block::
+
+    KIND_RESULTS
+    {
+        'TIME' : {
+            1:  {
+                'THROUGHPUT': [7]
+            },
+            2:  {
+                'THROUGHPUT': [8]
+            },
+            3:  {
+                'THROUGHPUT': [9]
+            },
+            :  {
+                'THROUGHPUT': [6]
+            }
+        }
+    }
+
+The following code will
+create a combination of all values as `THROUGHPUT-SUM`, that can then be used in a boxplot.
 
 .. code-block:: python
 
@@ -256,29 +384,29 @@ create a combination of all XXX values as "THROUGHPUT-SUM", that can then be use
         d={}
         for time, kv in results.items():
             for k,v in kv.items():
-            d.setdefault(k,[])
-            d[k].append(v)
+                d.setdefault(k,[])
+                d[k].append(v)
         for k,vs in d.items():
             RESULTS[k + '-SUM'] = vs[8:-1]
 
 
-NFP constants
+NPF constants
 =============
 
 Multiple constants can be used in the files and scripts sections: 
 
 ``NPF_ROOT``
-    Path to NPF
+    Path to NPF (path to the executable)
 ``NPF_BUILD_PATH``
-    Path to the build folder of NPF 
+    Path to the build folder of NPF (by default $NPF_ROOT/build, can be overriden with ``--build-path``)
 ``NPF_REPO``
-    Path to the repository under test
+    Path to the repository under test. If you don't use a repository, it will be the cwdir of the executable.
 ``NPF_TESTSCRIPT_PATH``
-    Path to the folder of the test script
+    Path to the folder containing the test script
 ``NPF_RESULT_PATH``
-    Path to the result folder (by default when the command is run, or as passed by the --result-path option)
+    Path to the result folder (by default ``results/repo/version/``, or as overwritten by `--result-path`` option)
 ``NPF_OUTPUT_PATH``
-    Path to the output folder (by default as result,unless given with --output-filename)
+    Path to the output folder (by default the same as the result result, unless given with `--output-filename`)
 ``NPF_NODE_ID``
     Index of the node used for the same role, in general 1
 ``NPF_NODE_MAX``
@@ -303,3 +431,4 @@ test any device under test in the middle of a client and a server.
 -   generic\_dpdk : DPDK-based tests, need a DPDK environment setted up
 -   generic : Other tests using the normal OS stack
 
+TODO : expand this section

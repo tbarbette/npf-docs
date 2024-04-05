@@ -112,7 +112,7 @@ NPF will output the results in configurable :ref:`CSV files <cluster>`. Below, t
 
    .. tab:: Multiple output
 
-      This format is more configurable, to give CSV per output variable, and one CSV per series. This one is for the iperf throughput, exported with ``--output --output-columns x mean std ``
+      This format is more configurable, to give CSV per output variable, and one CSV per series. This one is for the iperf throughput, exported with ``--output --output-columns x mean std``
 
       There will be one file for ``WINDOW=16`` and one for ``WINDOW=512``
       
@@ -172,10 +172,44 @@ showing the importance of each factor, the min/max values, or average for each f
       16 : 29615410118.66
       512 : 79456894976.00
 
+NPF can be used to compare different softwares, or the evolution of
+performances through commits.
+
+.. tabs::
+
+   .. tab:: History
+
+      TODO
+
+   .. tab:: Comparison
+
+      TODO
+
+
+NPF can also generate a website that will allow to explore the data, and share an interactive graph that can be directly linked from a paper.
+
+TODO : demo of website
+
 NPF can execute tests on a computer cluster, running your tests
 in multiple configurations rapidly and on relevant hardware.
 
-Test scripts are easy to write and share.
+.. tabs::
+
+   .. tab:: Localhost
+
+      TODO
+
+   .. tab:: Local Cluster`
+
+      TODO
+
+   .. tab:: Grid5000
+
+      TODO
+
+   .. tab:: CloudLab
+
+      TODO
 
 Test scripts are easy to write and share. We encourage users to share their ``.npf`` scripts along with their code
 to allow other users to reproduce their results and graphs.
@@ -197,3 +231,4 @@ Contents
    graph
    repos
    cluster
+   api

@@ -105,47 +105,50 @@ Data transformation
 - **graph_map** ={regex:value} Replace a value matching a regex by another. Useful with text results. It is a reduced of what the `perf-class <https://pypi.org/project/perf-class/>`_ project proposes.
 - **graph_series_prop** =true/false Divide all results by the results of the first serie. Hence graphs will be a percentage of relative to the first series. Eg if the first serie is "software 1" it will be removed from the graph and the other series will show how much better software 2, ... did against software 1. Alternative value : =integer, e.g. =100 shortcut to multiply the result by the given value to have a proportion in, e.g. percents.
 - **graph_cross_reference**, {Y:VARIABLE}, change the graph where the Y axis is Y (the result name) to have the X variable being another variable
-- **var_aggregate**, {VARIABLE:method}, aggregates all values for a given variable. If "method" is "all", all results will be put in a single variable value like if they were all points for the same run. You can also use "median", "average", ... to combine results for all variables using those mathematical methods. See below for an example.
+- **var_aggregate**, {VARIABLE:method}, aggregates all values for a given variable. If "method" is "all", all results will be put in a single variable value like if they were all points for the same run. You can also use "median", "average", ... to combine results for all variables using those mathematical methods. See :ref:`aggregate` for an example.
   
 
 Graph filtering
 ^^^^^^^^^^^^^^^
-- **graph_filter_by** = {variable:filter} In a lineplot, changes a line by a dashed-line according to a filter.
+- **graph_filter_by** = {variable:filter} In a lineplot, changes a line by a dashed-line according to a filter. For instance `graph_filter_by={THROUGHPUT:DROPPEDPC<10}`
 
-Example:
+.. collapse:: Example
 
-`graph_filter_by={THROUGHPUT:DROPPEDPC<10}`
+   Data:
 
-+---------+----------------+-------------+
-|         | **Throughput** | **Dropped** |
-+=========+================+=============+
-| **10**  | 10.0           | 0.0         |
-+---------+----------------+-------------+
-| **20**  | 20.0           | 0.0         |
-+---------+----------------+-------------+
-| **30**  | 30.0           | 0.0         |
-+---------+----------------+-------------+
-| **40**  | 40.0           | 0.0         |
-+---------+----------------+-------------+
-| **50**  | 50.0           | 0.0         |
-+---------+----------------+-------------+
-| **60**  | 57.0           | 5.0         |
-+---------+----------------+-------------+
-| **70**  | 63.0           | 10.0        |
-+---------+----------------+-------------+
-| **80**  | 68.0           | 15.0        |
-+---------+----------------+-------------+
-| **90**  | 72.0           | 20.0        |
-+---------+----------------+-------------+
-| **100** | 75.0           | 25.0        |
-+---------+----------------+-------------+
+   +---------+----------------+-------------+
+   |         | **Throughput** | **Dropped** |
+   +=========+================+=============+
+   | **10**  | 10.0           | 0.0         |
+   +---------+----------------+-------------+
+   | **20**  | 20.0           | 0.0         |
+   +---------+----------------+-------------+
+   | **30**  | 30.0           | 0.0         |
+   +---------+----------------+-------------+
+   | **40**  | 40.0           | 0.0         |
+   +---------+----------------+-------------+
+   | **50**  | 50.0           | 0.0         |
+   +---------+----------------+-------------+
+   | **60**  | 57.0           | 5.0         |
+   +---------+----------------+-------------+
+   | **70**  | 63.0           | 10.0        |
+   +---------+----------------+-------------+
+   | **80**  | 68.0           | 15.0        |
+   +---------+----------------+-------------+
+   | **90**  | 72.0           | 20.0        |
+   +---------+----------------+-------------+
+   | **100** | 75.0           | 25.0        |
+   +---------+----------------+-------------+
 
-Will give the following graphs that underlines that a certain part of the throughput graph is representing values that include packets being dropped. It conveys to the reader that while that line achieves a higher throughput, dropping packets is unnacceptable in most conditions.
+   Will give the following graphs that underlines that a certain part of the throughput graph is representing values that include packets being dropped. It conveys to the reader that while that line achieves a higher throughput, dropping packets is unnacceptable in most conditions.
 
-.. image:: https://github.com/tbarbette/npf/blob/master/doc/filter-THROUGHPUT.png?raw=true)[Example of filter_by]
-   :alt: Example of graph with graph_filter_by
+   .. image:: https://github.com/tbarbette/npf/blob/master/doc/filter-THROUGHPUT.png?raw=true)[Example of filter_by]
+      :alt: Example of graph with graph_filter_by
+      :width: 500
 
-The NPF script example is available .. `in integration/filter.npf <https://github.com/tbarbette/npf/blob/master/integration/filter.npf>`_.
+   The NPF script example is available .. `in integration/filter.npf <https://github.com/tbarbette/npf/blob/master/integration/filter.npf>`_.
+
+
 
 Splitting graphs in sub-plots
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
