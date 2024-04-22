@@ -154,8 +154,8 @@ Consider the following output of an experiment:
     RESULT-TX 28
 
 In that experiment, there was 30 packets received and 28 sent.
-However the operator also exported the throughput in `pps` every second.
-RX and TX are single value for the whole experiment's run. But there are 4 values for the THROUGHPUT that must stay associated with their TIME.
+However, the operator also exported the throughput in `pps` every second.
+RX and TX are single values for the whole experiment's run. But there are 4 values for the THROUGHPUT that must stay associated with their TIME.
 
 .. tabs::
 
@@ -166,7 +166,7 @@ RX and TX are single value for the whole experiment's run. But there are 4 value
 
    .. tab:: Throughput (synced)
 
-      With ``--config var_synced={time}`` to synchronize the values upon the first one (note the X axis)
+      Use ``--config var_synced={time}`` to synchronize the values upon the first one (note the X axis in the following figure)
 
       .. image:: https://github.com/tbarbette/npf/raw/master/doc/example_namespaces_synced-THROUGHPUT.svg?raw=true
          :width: 500
