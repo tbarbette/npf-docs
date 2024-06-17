@@ -10,7 +10,7 @@ copyright = '2021, Tom Barbette'
 author = 'Barbette'
 
 release = '1.0'
-version = '1.0.27'
+version = '1.0.60'
 
 sys.path.append(os.path.abspath('../../../npf'))
 

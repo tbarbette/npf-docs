@@ -70,6 +70,7 @@ Each bash code snippet will be executed by its corresponding role.
 In our example, the ``server`` role starts an iPerf3 server in the background 
 while the ``client`` role starts an iPerf3 client with several arguments with values taken from variables defined in the test script.
 In this example, ``PARALLEL`` takes values from 1 to 8, while ``ZEROCOPY`` takes either ``-Z`` or an empty string as value.
+More complex meta-scripting can be done using :ref:`jinja`.
 
 When running the script, roles are associated to computers in the cluster in two manner. 
 First, through the command line by passing pairs of role and address with ``--cluster role1=address1 role2=address2``.
@@ -89,6 +90,7 @@ These are optional and NPF uses a repository named "local" by default, which do 
 
 NPF uses a **cache** of the results it obtains. 
 When the same experiment for the same variables and version of the repository is run again, the test is not excuted but rather the values from the cache are used instead.
+This is convenient when you try many variables and then restrict some of them to get a simpler graph, without re-executing the actual test.
 To ignore the cache, use ``--force-retest``.
 
 Limitations

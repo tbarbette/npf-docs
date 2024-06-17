@@ -227,6 +227,7 @@ Contents
    usage
    tests
    variables
+   jinja
    output
    graph
    repos
