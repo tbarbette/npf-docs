@@ -40,22 +40,19 @@ Below is an example of the script using the jinja templating.
 .. code-block:: bash
 
     %config 
-    results_add={THROUGHPUT}
+    results_add={SUM}
 
     %variables
-    PARALLEL=[1-8]
+    TERMINAL=[1-8]
 
     %script@client jinja delay=1
-    {% for P in range(PARALLEL) %}
-        echo "Running client {{P}}"
-        result=$(iperf3 -f k -t 2 -P 1 $ZEROCOPY -c ${server:0:ip} | tail -n 3 | grep -ioE "[0-9.]+ [kmg]bits")
-        echo "RESULT-THROUGHPUT $result"
+    {% for P in range(TERMINAL) %}
+        echo "RESULT-SUM {{}}"
     {% endfor %}
 
-This script will run multiples times (for PARALLEL=8, 8 times) the iperf3 client command. 
-In this case it means the result "THROUGHPUT" will appear multiple times.
-The ``result_add`` config tells NPF to do the sum of all.
-In this situation it is needed as iperf3 is not multi-threaded, and therefore the -P parameter is rather limited to scale.
+This script will run multiples times (for PARALLEL=8, 8 times) the echo line.
+In this case it means the metric "SUM" will appear multiple times.
+The ``result_add`` config tells NPF to do the sum of all values.
 
 Deprecated python inline python
 -------------------------------
