@@ -143,7 +143,7 @@ NPF will output the results in configurable :ref:`CSV files <cluster>`. Below, t
          8 98827197480.96 2457532097.396189
 
 
-NPF automatically builds graphs, computes statistical result for each test 
+NPF automatically builds graphs, computes :ref:`statistics <stats>`  result for each test
 showing the importance of each factor, the min/max values, or average for each factor levels.
 
 .. code-block:: text
@@ -228,6 +228,7 @@ Contents
    tests
    variables
    jinja
+   stats
    output
    graph
    repos

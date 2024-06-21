@@ -47,10 +47,10 @@ Below is an example of the script using the jinja templating.
 
     %script@client jinja delay=1
     {% for P in range(TERMINAL) %}
-        echo "RESULT-SUM {{}}"
+        echo "RESULT-SUM {{P}}"
     {% endfor %}
 
-This script will run multiples times (for PARALLEL=8, 8 times) the echo line.
+This script will run multiples times (for TERMINAL=8, 8 times) the echo line.
 In this case it means the metric "SUM" will appear multiple times.
 The ``result_add`` config tells NPF to do the sum of all values.
 

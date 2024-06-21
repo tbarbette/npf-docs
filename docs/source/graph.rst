@@ -113,6 +113,7 @@ Graph filtering
 - **graph_filter_by** = {variable:filter} In a lineplot, changes a line by a dashed-line according to a filter. For instance `graph_filter_by={THROUGHPUT:DROPPEDPC<10}`
 
 .. collapse:: Example
+   :class: collapse
 
    Data:
 
@@ -142,11 +143,11 @@ Graph filtering
 
    Will give the following graphs that underlines that a certain part of the throughput graph is representing values that include packets being dropped. It conveys to the reader that while that line achieves a higher throughput, dropping packets is unnacceptable in most conditions.
 
-   .. image:: https://github.com/tbarbette/npf/blob/master/doc/filter-THROUGHPUT.png?raw=true)[Example of filter_by]
+   .. image:: https://github.com/tbarbette/npf/blob/master/doc/filter-THROUGHPUT.png?raw=true
       :alt: Example of graph with graph_filter_by
       :width: 500
 
-   The NPF script example is available .. `in integration/filter.npf <https://github.com/tbarbette/npf/blob/master/integration/filter.npf>`_.
+   The NPF script example is available `in integration/filter.npf <https://github.com/tbarbette/npf/blob/master/integration/filter.npf>`_.
 
 
 

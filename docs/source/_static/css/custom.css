@@ -1,0 +1,9 @@
+.collapse {
+    margin-bottom: 1em;
+    padding-left: 1em;
+
+}
+.collapse summary {
+    font-weight: bold;
+    cursor:pointer;
+}
