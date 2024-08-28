@@ -27,6 +27,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx_tabs.tabs',
     'sphinx_toolbox.collapse',
+    'myst_nb', # parses markdown (.md) and notebooks (.ipynb)
 ]
 
 intersphinx_mapping = {
@@ -50,4 +51,10 @@ html_static_path = ['_static']
 
 html_css_files = [
     'css/custom.css',
+]
+
+# -- Options for MyST parser
+
+myst_enable_extensions = [
+    "colon_fence",
 ]
