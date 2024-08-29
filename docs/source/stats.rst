@@ -1,4 +1,5 @@
 .. _stats:
+
 Statistics
 ==========
 
