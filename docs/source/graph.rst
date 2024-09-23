@@ -73,6 +73,14 @@ Plot types
 - **graph_grid** =true/false Display a grid on the graph. Default false.
 - **graph_bar_stacks** =true/false If your series are a complex barplot (more than 1 dynamic variable), it will stack the plots instead of adding them one after the other. Default is false.
 
+Time series and namespaces
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+When handling time series (organized in namespaces, see :ref:`namespace`), you might want to synchronize or shift the time for some namespaces.
+
+- **var_sync** = list["time"] Synchronize multiple time series on the X axis, shifting them by the first value.
+- **var_shift** = dict[metric:shift,...] Shift all given metric by the given values. Useful to resynchronize time, though the best practice is to do it upfront.
+- **var_repeat** = list[metric] Ensure all given metrics have datapoints at the same value, repeating them from the previous value if necessary.
+
 Series tweaking
 ^^^^^^^^^^^^^^^
 

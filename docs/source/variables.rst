@@ -68,11 +68,11 @@ NPF also produces the two following graphs in result:
 See the :ref:`graphing page<graph>` to style the graph and change units, axis names, etc...
 
 .. _aggregate:
+.. _wsp:
+Space-filling design
+====================
 
-Experimental design
-===================
-
-NPF allows to define covariables and then use a WSP experimental design to
+NPF allows to define covariables and then use a WSP space-filling design to
 sample values in a given range.
 
 .. code-block:: bash
@@ -106,7 +106,8 @@ with a minimum distance between combinations using the WSP algorithm
         C=[1-2000000#]
     }
 
-Non-covariated variables would result ``2M*10K*1K=10^13`` runs. A range with the ``#`` parameter and no stop samples 95 combinations of values out of the defined range.
+Non-covariated variables would result ``2M*10K*1K=10^13`` runs.
+A range with the ``#`` parameter and no stop samples 95 combinations of values out of the defined range.
 The values are sampled so that the distance between all points in A, B and C is optimal (as
 defined in WSP). Also, these values are sampled deterministically, so the experiments are reproducibles.
 
