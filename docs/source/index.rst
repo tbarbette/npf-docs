@@ -157,7 +157,7 @@ showing the importance of each factor, the min/max values, or average for each f
    Min:
       PARALLEL = 1, WINDOW = 16, TIME = 2 : 9105330667.52
 
-   Means and std/mean per variables :
+   Means per variables :
    PARALLEL:
       1 : 17244293693.44
       2 : 35278861369.34
