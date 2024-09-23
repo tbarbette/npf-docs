@@ -75,7 +75,7 @@ Plot types
 
 Time series and namespaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-When handling time series (organized in namespaces, see :ref:`namespace`), you might want to synchronize or shift the time for some namespaces.
+When handling time series (see :ref:`namespace`), you might want to synchronize or shift the time for some time series namespaces. Contrary to the options provided in the :ref:`namespace` page, these options do not affect the data recorded in the database but only the graph.
 
 - **var_sync** = list["time"] Synchronize multiple time series on the X axis, shifting them by the first value.
 - **var_shift** = dict[metric:shift,...] Shift all given metric by the given values. Useful to resynchronize time, though the best practice is to do it upfront.

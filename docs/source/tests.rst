@@ -134,9 +134,8 @@ Here's the result for all possible modes:
          :width: 500
 
 .. _namespaces:
-
-Namespaces
-~~~~~~~~~~
+Time series
+~~~~~~~~~~~
 
 A single run of a single experiment might produce a series of values.
 Typically, the throughput over time for the duration of the whole experiment.
@@ -173,8 +172,21 @@ RX and TX are single values for the whole experiment's run. But there are 4 valu
 
 
 
-The use of namespace is not restricted to time. For instance one might want to extract the number of packets received per CPU cores using a format like `CPU-XXX-RESULT-NBPACKETS YYY`.
-This will automatically create an histogram of the number of packets per core for the experiment.
+The use of time series is not restricted to time.
+For instance one might want to extract the number of packets received per CPU cores using a format like `CPU-XXX-RESULT-NBPACKETS YYY`.
+This will automatically create a histogram of the number of packets per core for the experiment.
+
+You might want to have multiple time series, that we refer to as namespaces. The prefix ``TIME`` in ``TIME-1001-RESULT-THROUGHPUT 7 pps`` is a namespace. Another time series with another namespace will be treated independently.
+
+Time series options
+^^^^^^^^^^^^^^^^^^^
+When handling time series, you might want to synchronize or shift namespaces.
+
+- **time_sync** = list[namespaces] Those namespaces will be shifted by the first value that appear. E.g. if the first time is 100 and the second is 105 the time value will become 0 and 5.
+- **time_precision** = 1 Number of decimals to use to merge values with similar timing. Useful with the synchronization primitives to avoid having different points at, for instance 1.00 and 1.01 because of very small shifts.
+- **glob_sync** = list[namespaces] Synchronize time accorss multiple namespaces. Time_sync is independent in the namespace. So if A starts at 5 and B starts at 3, ``glob_sync={A+B}`` will have A start at 2. With only time_sync they would both start at 0.
+
+Note that this is done at the data collection time. You might prefer to tweak values at output time (graphing) with options in :ref:`graphing`.
 
 
 Variables
@@ -253,15 +265,6 @@ All graph-related configuration options are described in the :ref:`graphs page<g
 ``required_tags=``
     Comma-separated list of tags required to run the test
 
-Time series and namespaces
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-When handling time series (generalized to namespaces, see :ref:`namespace`), you might want to synchronize or shift namespaces.
-
-- **time_sync** = list[namespaces] Those namespaces will be shifted by the first value that appear. E.g. if the first time is 100 and the second is 105 the time value will become 0 and 5.
-- **time_precision** = 1 Number of decimals to use to merge values with similar timing. Useful with the synchronization primitives to avoid having different points at, for instance 1.00 and 1.01 because of very small shifts.
-- **glob_sync** = list[namespaces] Synchronize time accorss multiple namespaces. Time_sync is independent in the namespace. So if A starts at 5 and B starts at 3, ``glob_sync={A+B}`` will have A start at 2. With only time_sync they would both start at 0.
-
-Note that this is done at the data collection time. You might prefer to tweak values at output time (graphing) with options in :ref:`graphing`.
 
 Include
 -------
