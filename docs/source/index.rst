@@ -241,3 +241,6 @@ Contents
    repos
    cluster
    api
+   editor_support
+
+
