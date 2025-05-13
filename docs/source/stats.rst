@@ -122,7 +122,7 @@ It shows the importance of most variables. Here ``WINDOW`` is more important tha
 The regression tree is saved to a PDF file for visualization. In the example above, it is not generated because the tree is too deep.
 Use `--statistics-maxdepth 5` to limit the tree depth.
 
-.. image:: https://github.com/tbarbette/npf/raw/master/doc/covariance-THROUGHPUT-clf.png
+.. image:: https://github.com/tbarbette/npf/raw/main/doc/covariance-THROUGHPUT-clf.png
    :width: 400
    :alt: Regression tree
 
@@ -140,7 +140,7 @@ Interactions with ANOVA
 
 Finally, the last available statistic is the p-value of a two-way ANOVA test for each pair of variables.
 
-.. image:: https://github.com/tbarbette/npf/raw/master/doc/covariance-THROUGHPUT-anova.png
+.. image:: https://github.com/tbarbette/npf/raw/main/doc/covariance-THROUGHPUT-anova.png
    :width: 400
    :alt: ANOVA p-value matrix
 
@@ -154,7 +154,7 @@ The correlation matrix then shows the pearson correlation between each factor an
 
 The correlation matrix is printed textually but also generated as a picture.
 
-.. image:: https://github.com/tbarbette/npf/raw/master/doc/covariance-THROUGHPUT-correlation.png
+.. image:: https://github.com/tbarbette/npf/raw/main/doc/covariance-THROUGHPUT-correlation.png
    :width: 400
    :alt: Correlation matrix
 

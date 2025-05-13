@@ -120,17 +120,17 @@ Here's the result for all possible modes:
 
    .. tab:: Default
 
-      .. image:: https://github.com/tbarbette/npf/raw/master/doc/example_multiple_result_default-THROUGHPUT.png?raw=true
+      .. image:: https://github.com/tbarbette/npf/raw/main/doc/example_multiple_result_default-THROUGHPUT.png?raw=true
          :width: 500
 
    .. tab:: Add
 
-      .. image:: https://github.com/tbarbette/npf/raw/master/doc/example_multiple_result_add-THROUGHPUT.png?raw=true
+      .. image:: https://github.com/tbarbette/npf/raw/main/doc/example_multiple_result_add-THROUGHPUT.png?raw=true
          :width: 500
 
    .. tab:: Append
 
-      .. image:: https://github.com/tbarbette/npf/raw/master/doc/example_multiple_result_append-THROUGHPUT.png?raw=true
+      .. image:: https://github.com/tbarbette/npf/raw/main/doc/example_multiple_result_append-THROUGHPUT.png?raw=true
          :width: 500
 
 .. _namespaces:
@@ -160,14 +160,14 @@ RX and TX are single values for the whole experiment's run. But there are 4 valu
 
    .. tab:: Throughput
 
-      .. image:: https://github.com/tbarbette/npf/raw/master/doc/example_namespaces-THROUGHPUT.svg?raw=true
+      .. image:: https://github.com/tbarbette/npf/raw/main/doc/example_namespaces-THROUGHPUT.svg?raw=true
          :width: 500
 
    .. tab:: Throughput (synced)
 
       Use ``--config var_synced={time}`` to synchronize the values upon the first one (note the X axis in the following figure)
 
-      .. image:: https://github.com/tbarbette/npf/raw/master/doc/example_namespaces_synced-THROUGHPUT.svg?raw=true
+      .. image:: https://github.com/tbarbette/npf/raw/main/doc/example_namespaces_synced-THROUGHPUT.svg?raw=true
          :width: 500
 
 
