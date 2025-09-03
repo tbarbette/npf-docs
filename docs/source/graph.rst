@@ -14,13 +14,13 @@ For instance, if there is only one dynamic variable, a line plot will be used, w
 Below, npf-run gave two series to the grapher (current and last commit), while the test script
 generate a matrix of Burst and Lengths, that is 2 dynamic variables and only a barplot can render multiple variables at the same time.
 
-.. image:: https://github.com/tbarbette/npf/raw/master/doc/sample_graph.png
+.. image:: https://github.com/tbarbette/npf/raw/main/doc/sample_graph.png
    :width: 400
    :alt: Sample graph
 
 If there are 2 dynamic variables, but only a single serie (i.e. you used npf-compare with a single serie, or npf-run with --history 0), one of the variable will be taken out as serie, and a line plot will still be used:
 
-.. image:: https://github.com/tbarbette/npf/raw/master/doc/sample_graph3.png
+.. image:: https://github.com/tbarbette/npf/raw/main/doc/sample_graph3.png
    :width: 400
    :alt: Sample graph
 
@@ -151,11 +151,11 @@ Graph filtering
 
    Will give the following graphs that underlines that a certain part of the throughput graph is representing values that include packets being dropped. It conveys to the reader that while that line achieves a higher throughput, dropping packets is unnacceptable in most conditions.
 
-   .. image:: https://github.com/tbarbette/npf/blob/master/doc/filter-THROUGHPUT.png?raw=true
+   .. image:: https://github.com/tbarbette/npf/blob/main/doc/filter-THROUGHPUT.png?raw=true
       :alt: Example of graph with graph_filter_by
       :width: 500
 
-   The NPF script example is available `in integration/filter.npf <https://github.com/tbarbette/npf/blob/master/integration/filter.npf>`_.
+   The NPF script example is available `in integration/filter.npf <https://github.com/tbarbette/npf/blob/main/integration/filter.npf>`_.
 
 
 

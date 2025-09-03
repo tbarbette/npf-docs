@@ -48,7 +48,7 @@ To produce the following graph:
       This is the default graph, with almost no configuration, generated out of the data automatically. 
       The default is not always a lineplot. NPF selected a lineplot because of the number of variables and points.
       
-      .. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/iperf2-THROUGHPUT.svg
+      .. image:: https://github.com/tbarbette/npf/raw/main/tests/tcp/iperf2-THROUGHPUT.svg
          :width: 500
          :alt: Result for tests/tcp/01-iperf.npf, by default it gives a lineplot
 
@@ -56,7 +56,7 @@ To produce the following graph:
 
       Forcing the graph type to boxplot
 
-      .. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/iperf2-THROUGHPUT-boxplot.svg
+      .. image:: https://github.com/tbarbette/npf/raw/main/tests/tcp/iperf2-THROUGHPUT-boxplot.svg
          :width: 500
          :alt: Result for tests/tcp/01-iperf.npf with a boxplot
 
@@ -64,7 +64,7 @@ To produce the following graph:
 
       Forcing the graph type to barplot
 
-      .. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/iperf2-THROUGHPUT-barplot.svg
+      .. image:: https://github.com/tbarbette/npf/raw/main/tests/tcp/iperf2-THROUGHPUT-barplot.svg
          :width: 500
          :alt: Result for tests/tcp/01-iperf.npf with a barplot
 
@@ -72,7 +72,7 @@ To produce the following graph:
 
       Forcing the graph type to be an horizontal barplot
 
-      .. image:: https://github.com/tbarbette/npf/raw/master/tests/tcp/iperf2-THROUGHPUT-barh.svg
+      .. image:: https://github.com/tbarbette/npf/raw/main/tests/tcp/iperf2-THROUGHPUT-barh.svg
          :width: 500
          :alt: Result for tests/tcp/01-iperf.npf with an horizontal barplot
 

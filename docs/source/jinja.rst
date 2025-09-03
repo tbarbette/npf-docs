@@ -18,7 +18,7 @@ The most useful jinja primitive is definitively the for loop :
         Do something with {{i}}
     {% endfor %}
 
-While bash scripts can implement for loop by themselves, this is especially utile to generate configuration files, or keep scripts clean.
+While bash scripts can implement for loop by themselves, this is especially useful to generate configuration files, or keep scripts clean.
 
 Another useful situation is to change a part of a configuration file according to the given parameters. For instance for an nginx web server:
 

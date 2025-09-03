@@ -59,10 +59,10 @@ The following test script defines a single variable and computes two results.
 NPF executes the above test script by running the script sections for all values of ``$NUMBER``, i.e. from 1 to 10. 
 NPF also produces the two following graphs in result:
 
-.. image:: https://github.com/tbarbette/npf/raw/master/tests/examples/tests-readme-ADDITION.png
+.. image:: https://github.com/tbarbette/npf/raw/main/tests/examples/tests-readme-ADDITION.png
     :alt: "Graph for RESULT-ADDITION"
 
-.. image:: https://github.com/tbarbette/npf/raw/master/tests/examples/tests-readme-MULT.png
+.. image:: https://github.com/tbarbette/npf/raw/main/tests/examples/tests-readme-MULT.png
     :alt: "Graph for RESULT-MULT"
 
 See the :ref:`graphing page<graph>` to style the graph and change units, axis names, etc...
@@ -127,9 +127,9 @@ as additional runs of the other variables.
 
 The following graph is the result of executing the test script example with an additional ``X={0,1}`` variable is defined.
 ``A``, ``B`` and ``C`` variables are aggregated using ``var_aggregated`` as explained above.
-This is generated from the script `integration/exeperimental.npf <https://github.com/tbarbette/npf/blob/master/integration/experimental.npf>`__
+This is generated from the script `integration/exeperimental.npf <https://github.com/tbarbette/npf/blob/main/integration/experimental.npf>`__
 
-.. image:: https://github.com/tbarbette/npf/raw/master/integration/experimental.png
+.. image:: https://github.com/tbarbette/npf/raw/main/integration/experimental.png
   :width: 400
   :alt: Exemple of aggregated results in an other variable
   
