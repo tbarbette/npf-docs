@@ -60,7 +60,7 @@ Example
 
 The following test script defines a single variable and computes two results.
 
-.. code-block::text
+.. code-block:: text
 
     %variables
     NUMBER=[1-10]
