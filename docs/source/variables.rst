@@ -76,9 +76,11 @@ NPF also produces the two following graphs in result:
 
 .. image:: https://github.com/tbarbette/npf/raw/main/examples/doc-variable-example-ADDITION.png
     :alt: "Graph for RESULT-ADDITION"
+    :width: 240px
 
 .. image:: https://github.com/tbarbette/npf/raw/main/examples/doc-variable-example-MULT.png
     :alt: "Graph for RESULT-MULT"
+    :width: 240px
 
 See the :ref:`graphing page<graph>` to style the graph and change units, axis names, etc...
 
