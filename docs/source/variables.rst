@@ -67,13 +67,14 @@ NPF also produces the two following graphs in result:
 
 See the :ref:`graphing page<graph>` to style the graph and change units, axis names, etc...
 
-.. _aggregate:
-.. _wsp:
-Space-filling design
-====================
+See the :ref:`experimental design<expdesign>` page to learn how to explore a large parameter space.
 
-NPF allows to define covariables and then use a WSP space-filling design to
-sample values in a given range.
+
+.. _aggregate:
+Covariables
+===========
+
+NPF allows to define covariables that move together.
 
 .. code-block:: bash
 
@@ -94,40 +95,36 @@ A covariable makes variables move together:
 
 The above example leads to 10 tests, (A=1,B=1), (A=2, B=2) ... (A=10, B=10).
 
-The ``#`` parameter defines variables with values drawn from ranges
-with a minimum distance between combinations using the WSP algorithm
-(see J. Santiago, M. Claeys-Bruno, and M. Sergent. Construction of Space-Filling Designs using WSP Algorithm for High Dimensional Spaces. Chemometrics and Intelligent Laboratory Systems, 113, 2012.), such as this:
+This is also useful to pair variables, for instance if a configuration depends on another. Say for instance you want a specific number of cores for a given throughput:
 
 .. code-block:: bash
 
     {
-        A=[1-1000#]
-        B=[1-10000#]
-        C=[1-2000000#]
+        RATE={10,50,100}
+        CORES={2,4,5}
     }
 
-Non-covariated variables would result ``2M*10K*1K=10^13`` runs.
-A range with the ``#`` parameter and no stop samples 95 combinations of values out of the defined range.
-The values are sampled so that the distance between all points in A, B and C is optimal (as
-defined in WSP). Also, these values are sampled deterministically, so the experiments are reproducibles.
+This will run 3 tests, (RATE=10, CORES=2), (RATE=50, CORES=4), (RATE=100, CORES=5)
 
-Our example still defines 3 variables, and the resulting
-plot may not be appropriate by representing the evolution of these variables. 
+Our example still defines 2 variables, and the resulting
+plot may not be appropriate by representing the evolution of these variables separately. 
 In this case, the ``var_aggregate`` configuration option can be used with a list:
-
-
 
 .. code-block:: bash
 
     %config
-    var_aggregate={A+B+C:all}
+    var_aggregate={A+B:all}
+
+    %variables
+    A=[1-10]
+    B=[1-10]
+    X={0,1}
 
 In this example, all points are combined and considered
 as additional runs of the other variables.
 
 The following graph is the result of executing the test script example with an additional ``X={0,1}`` variable is defined.
-``A``, ``B`` and ``C`` variables are aggregated using ``var_aggregated`` as explained above.
-This is generated from the script `integration/exeperimental.npf <https://github.com/tbarbette/npf/blob/main/integration/experimental.npf>`__
+``A``, ``B`` variables are aggregated using ``var_aggregated`` as explained above.
 
 .. image:: https://github.com/tbarbette/npf/raw/main/integration/experimental.png
   :width: 400
