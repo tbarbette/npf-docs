@@ -233,6 +233,7 @@ Contents
    usage
    tests
    variables
+   experimentaldesign
    jinja
    stats
    output

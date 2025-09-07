@@ -4,6 +4,11 @@
 .. automodule:: npf
 
 
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
@@ -13,4 +18,3 @@
       from_experiment_path
       npf_writeable_root_path
       splitpath
-   

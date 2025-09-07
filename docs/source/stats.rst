@@ -1,13 +1,14 @@
 .. _stats:
+
 Interpretation of results
 =========================
 
-The :ref:`graphs` section gives means to try to arrange graphs, splitting a graph in sub-graphs for
+The :ref:`graph` section gives means to try to arrange graphs, splitting a graph in sub-graphs for
 levels of a variable, ignoring less important variables, ...
 
 But if you have many variables and results, graphs will be hard to comprehend.
 It might be best to use statistical tools to reduce the search space and conduct
-a more restricted experimental design (see :ref:`_variables`).
+a more restricted experimental design (see :ref:`variables`).
 
 Statistics
 ----------
