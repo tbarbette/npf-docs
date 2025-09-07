@@ -12,17 +12,31 @@ A variable can describe its values using multiple schemes:
 
 ``LENGTH=60``
     Single value
-``LENGTH=[60+1024]`` 
+``LENGTH=[60-1024]`` 
     All values between 60 and 1024, included
+``LENGTH=[100-1000#100]``  
+    All values between 100 and 1000 by step of 100.
 ``LENGTH=[64*1024]``
     All values starting from 64 multiplied per 2 up to 1024
+``LENGTH=[64*1024#4]``
+    All values starting from 64 multiplied per 4 up to 1024
 ``LENGTH={60,64,128,256,1024,1496}``
     A list of values
+
+Advanced
+--------
+
+The following are advanced variables, if you're beginning in NPF, stick with the ones above.
+
 ``LENGTH=RANDOM(A,B)``
     A pseudo-random number between A and B, which can be previously defined variables. 
     A value is generated for each execution and kept for all runs of a given execution.
 ``LENGTH=EXPAND(Hello $VARIABLE)``
     A list of string starting with "Hello" for each value of the previously defined ``$VARIABLE``. When ``VARIABLE=[1-10]`` then ``LENGTH`` is ``{Hello 1,Hello 2, ..., Hello 10}``.
+
+.. note::
+
+    By default, an experiment will try every combination of variables, which is often called "grid-search" or "full factorial design". Check the :ref:`experimental design<expdesign>` page to learn how to explore a large parameter space.
 
 
 Tags
@@ -71,6 +85,7 @@ See the :ref:`experimental design<expdesign>` page to learn how to explore a lar
 
 
 .. _aggregate:
+
 Covariables
 ===========
 

@@ -1,4 +1,5 @@
-.. _wsp:
+.. _expdesign:
+
 Experimental design
 ===================
 
