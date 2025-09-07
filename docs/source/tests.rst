@@ -186,7 +186,7 @@ When handling time series, you might want to synchronize or shift namespaces.
 - **time_precision** = 1 Number of decimals to use to merge values with similar timing. Useful with the synchronization primitives to avoid having different points at, for instance 1.00 and 1.01 because of very small shifts.
 - **glob_sync** = list[namespaces] Synchronize time accorss multiple namespaces. Time_sync is independent in the namespace. So if A starts at 5 and B starts at 3, ``glob_sync={A+B}`` will have A start at 2. With only time_sync they would both start at 0.
 
-Note that this is done at the data collection time. You might prefer to tweak values at output time (graphing) with options in :ref:`graphing`.
+Note that this is done at the data collection time. You might prefer to tweak values at output time (graphing) with options in :ref:`graph`.
 
 
 Variables

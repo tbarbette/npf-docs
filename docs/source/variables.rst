@@ -61,6 +61,7 @@ Example
 The following test script defines a single variable and computes two results.
 
 .. code-block::text
+
     %variables
     NUMBER=[1-10]
 
@@ -73,10 +74,10 @@ The following test script defines a single variable and computes two results.
 NPF executes the above test script by running the script sections for all values of ``$NUMBER``, i.e. from 1 to 10. 
 NPF also produces the two following graphs in result:
 
-.. image:: https://github.com/tbarbette/npf/raw/main/tests/examples/tests-readme-ADDITION.png
+.. image:: https://github.com/tbarbette/npf/raw/main/examples/doc-variable-example-ADDITION.png
     :alt: "Graph for RESULT-ADDITION"
 
-.. image:: https://github.com/tbarbette/npf/raw/main/tests/examples/tests-readme-MULT.png
+.. image:: https://github.com/tbarbette/npf/raw/main/examples/doc-variable-example-MULT.png
     :alt: "Graph for RESULT-MULT"
 
 See the :ref:`graphing page<graph>` to style the graph and change units, axis names, etc...
