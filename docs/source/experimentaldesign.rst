@@ -57,9 +57,10 @@ Constraints are variables for which a higher value, all other parameters being e
 Giving such "monotonic" constraints to the experimental design can significantly reduce the number of experiments to run.
 Imagine the ZLT is 14MPPS with 4 cores and the system has not much inter-core contention. There's no need to try 15 and 16MPPS with 3 cores as 3 cores cannot do better than 4 cores.
 
-``--exp-design allzlt(INPUT,OUTPUT,1.01,CPU)``
+``--exp-design zlt(INPUT,OUTPUT,1.01,CPU)``
 
-will try to find the zero-loss throughput for INPUT given OUTPUT, but will try first with the highest CPU value. When the ZLT is found for a given CPU value, it will start at the max ZLT for the previous CPU value, as a system with less cores cannot perform better than a system with more cores.
+The first line will try to find the zero-loss throughput for INPUT given OUTPUT, but will try first with the highest CPU value. When the ZLT is found for a given CPU value, it will start at the max ZLT for the previous CPU value, as a system with less cores cannot perform better than a system with more cores.
+As explained above, the `allzlt` variant ``--exp-design allzlt(INPUT,OUTPUT,1.01,CPU)``  will try to find all values below the ZLT, also avoiding to try values that are known to be unsustainable with less CPU.
 
 Multiple constraints can be given, separated by commas.
 
