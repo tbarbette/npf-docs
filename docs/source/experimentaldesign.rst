@@ -50,3 +50,29 @@ Zero-loss throughput
 In some cases, you may want to try all values that are sustained by the system. Imagine the system can absorb 46 Gbps of traffic and you want to observe the latency, then you want to try all values below 46 and not just find the limit (zero-loss throughput) which is 46. Use ``--exp-design allzlt(INPUT,OUTPUT)`` instead.
 
 If output is given as a percentage of the input and not a raw value comparable to the input, you can use the suffix ``p`` instead of ``t`` like ``zlp`` or ``allzlp``.
+
+Constraints
+~~~~~~~~~~~
+Constraints are variables for which a higher value, all other parameters being equal, can only improve performance. For instance, the number of cores is a usual constraint in a system which is relatively horizontally scalable.
+Giving such "monotonic" constraints to the experimental design can significantly reduce the number of experiments to run.
+Imagine the ZLT is 14MPPS with 4 cores and the system has not much inter-core contention. There's no need to try 15 and 16MPPS with 3 cores as 3 cores cannot do better than 4 cores.
+
+``--exp-design allzlt(INPUT,OUTPUT,1.01,CPU)``
+
+will try to find the zero-loss throughput for INPUT given OUTPUT, but will try first with the highest CPU value. When the ZLT is found for a given CPU value, it will start at the max ZLT for the previous CPU value, as a system with less cores cannot perform better than a system with more cores.
+
+Multiple constraints can be given, separated by commas.
+
+``--exp-design allzlt(INPUT,OUTPUT,1.01,CPU,FREQ)``
+
+will try first the highest CPU with then the highest FREQ, and will then assume that any configuration with less CPU but the same FREQ cannot de better, and similarly that any configuration with less FREQ but the same CPU cannot be better.
+
+
+Mininmum Acceptable
+...................
+
+``--exp-design minacceptable(FACTOR,OUTPUT_PERCENT,1.01)``
+will try to find the minimum FACTOR that has OUTPUT_PERCENT >= 100/MARGIN.
+The exploration starts with the lowest FACTOR and increase it using a binary search until the OUTPUT_PERCENT is above the threshold.
+If the lowest value of FACTOR gave, e.g. 50% of OUTPUT_PERCENT, then the next value to be tried will be the middle value between the lowest and the highest value of FACTOR. It is a binary search that assumes a certain proportionality between FACTOR and OUTPUT_PERCENT.
+This is useful to find the minimum resources required to sustain a given throughput.
