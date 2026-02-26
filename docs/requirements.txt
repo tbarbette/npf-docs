@@ -2,3 +2,4 @@ sphinx_rtd_theme
 sphinx_tabs
 sphinx_toolbox
 myst_nb
+pandas

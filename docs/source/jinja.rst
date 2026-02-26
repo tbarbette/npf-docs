@@ -32,6 +32,13 @@ Another useful situation is to change a part of a configuration file according t
 
 The complete jinja documentation can be found at https://jinja.palletsprojects.com/en/3.1.x/.
 
+Built-in functions
+------------------
+
+NPF exposes the following functions in the Jinja context:
+
+- ``get_nodes(role)``: Returns the list of nodes assigned to the given role. Useful for iterating over nodes of another role to access their NIC properties (IP, MAC, etc.). See :ref:`role_repetition` for details and examples.
+
 Example
 -------
 

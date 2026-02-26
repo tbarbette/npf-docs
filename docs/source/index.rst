@@ -37,7 +37,7 @@ Can be run with the following command line:
 
 .. code-block:: bash
 
-   npf-run --test tests/tcp/01-iperf.npf --cluster client=machine01.cluster.com server=machine02.cluster.com
+   npf --test tests/tcp/01-iperf.npf --cluster client=machine01.cluster.com server=machine02.cluster.com
 
 To produce the following graph:
 
@@ -48,7 +48,7 @@ To produce the following graph:
       This is the default graph, with almost no configuration, generated out of the data automatically. 
       The default is not always a lineplot. NPF selected a lineplot because of the number of variables and points.
       
-      .. image:: https://github.com/tbarbette/npf/raw/main/tests/tcp/iperf2-THROUGHPUT.svg
+      .. image:: https://github.com/tbarbette/npf/raw/main/examples/results/iperf2-THROUGHPUT.svg
          :width: 500
          :alt: Result for tests/tcp/01-iperf.npf, by default it gives a lineplot
 
@@ -56,7 +56,7 @@ To produce the following graph:
 
       Forcing the graph type to boxplot
 
-      .. image:: https://github.com/tbarbette/npf/raw/main/tests/tcp/iperf2-THROUGHPUT-boxplot.svg
+      .. image:: https://github.com/tbarbette/npf/raw/main/examples/results/iperf2-THROUGHPUT-boxplot.svg
          :width: 500
          :alt: Result for tests/tcp/01-iperf.npf with a boxplot
 
@@ -64,7 +64,7 @@ To produce the following graph:
 
       Forcing the graph type to barplot
 
-      .. image:: https://github.com/tbarbette/npf/raw/main/tests/tcp/iperf2-THROUGHPUT-barplot.svg
+      .. image:: https://github.com/tbarbette/npf/raw/main/examples/results/iperf2-THROUGHPUT-barplot.svg
          :width: 500
          :alt: Result for tests/tcp/01-iperf.npf with a barplot
 
@@ -72,7 +72,7 @@ To produce the following graph:
 
       Forcing the graph type to be an horizontal barplot
 
-      .. image:: https://github.com/tbarbette/npf/raw/main/tests/tcp/iperf2-THROUGHPUT-barh.svg
+      .. image:: https://github.com/tbarbette/npf/raw/main/examples/results/iperf2-THROUGHPUT-barh.svg
          :width: 500
          :alt: Result for tests/tcp/01-iperf.npf with an horizontal barplot
 
@@ -222,7 +222,8 @@ The documentation describes first the basic :doc:`usage <usage>` and :ref:`insta
 It then elaborates on writing ``.npf`` :ref:`tests <tests>` scripts, with the definition of :ref:`variables <variables>`
 and advanced configuration for :ref:`graphs <graph>` generation.
 NPF can also compile and deploy code as specified in :ref:`repositories <repos>`.
-Finally, computer clusters can be specified to NPF in :ref:`cluster <cluster>` files.
+Computer clusters can be specified to NPF in :ref:`cluster <cluster>` files.
+A library of reusable :ref:`modules <modules>` is available for common tasks such as traffic generation, system tuning, and performance monitoring.
 
 Contents
 --------
@@ -241,6 +242,7 @@ Contents
    graph
    repos
    cluster
+   modules
    api
    editor_support
 

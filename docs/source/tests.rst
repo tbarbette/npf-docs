@@ -134,6 +134,7 @@ Here's the result for all possible modes:
          :width: 500
 
 .. _namespaces:
+
 Time series
 ~~~~~~~~~~~
 

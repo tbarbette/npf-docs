@@ -74,6 +74,8 @@ The following example shows how multiple client can be configured using differen
 
   %import@client wrk2
 
+
+
 .. _multi:
 
 Running the same script multiple times on each machine
@@ -98,4 +100,27 @@ This is equivalent of running every of the "client" scripts with `ip netns exec 
 The namsepace must be created in an init script with `Ip netns add npfns${NPF_MULTI_ID}`.
 Check the `modules/wrk-nsdelay.npf` example that supports both multiple nodes and the "multi" feature as an example to simulate many different clients using a per-namespace link delay simulation using netem.
 
+.. _multi_jinja:
 
+Accessing node information from Jinja templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When using the ``jinja`` keyword in a script section, you can call the ``get_nodes(role)`` function to retrieve the list of nodes assigned to a given role. This is useful when a script on one role needs to reference properties (e.g. IP addresses) of nodes assigned to another role.
+
+The function returns the list of node objects for the given role. Each node exposes its NIC information via ``get_nic(index)``, which provides attributes like ``ip``, ``mac``, ``ifname``, and ``pci``.
+
+For example, the following test has multiple clients and a server that iterates over all client nodes to print their IP addresses:
+
+.. code-block:: bash
+
+    %script@client autokill=false
+    echo "Client ${NPF_NODE_ID}"
+
+    %script@server jinja autokill=false
+    {% for client in get_nodes("client") %}
+    echo "Client IP is {{client.get_nic(0).ip}}"
+    {% endfor %}
+
+Run with: ``npf_run --test mytest.npf --cluster client=user@machine1 client=user@machine2``
+
+See :ref:`jinja` for more details on using Jinja templating in NPF scripts.

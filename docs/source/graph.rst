@@ -11,7 +11,7 @@ To choose the type of graph, the number of dynamic variables (I.e. variables tha
 For instance, if there is only one dynamic variable, a line plot will be used, with one line per series. If there is no dynamic variables, a barplot will be used, but a box plot can also be used.
 
 
-Below, npf-run gave two series to the grapher (current and last commit), while the test script
+Below, npf gave two series to the grapher (current and last commit), while the test script
 generate a matrix of Burst and Lengths, that is 2 dynamic variables and only a barplot can render multiple variables at the same time.
 
 .. image:: https://github.com/tbarbette/npf/raw/main/doc/sample_graph.png
