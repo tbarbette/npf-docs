@@ -88,10 +88,11 @@ These are optional and NPF uses a repository named "local" by default, which do 
    It is advised to start using NPF without repositories or dependencies handled by NPF.
    When some familiarity with NPF is gained, start using its dependencies chains and build process.
 
-NPF uses a **cache** of the results it obtains. 
-When the same experiment for the same variables and version of the repository is run again, the test is not excuted but rather the values from the cache are used instead.
+NPF maintains a **cache** of the results it obtains. 
+When the same experiment for the same variables and version of the repository is run again, by passing the ``--cache`` argument, the test will not be executed. 
+Instead, the values from the cache will be used.
 This is convenient when you try many variables and then restrict some of them to get a simpler graph, without re-executing the actual test.
-To ignore the cache, use ``--force-retest``.
+Note that if some results are missing (for example, if you added more metrics since the last run, or if there are less points in the cache than the number of runs requested), NPF will still launch the test to complete the missing points.
 
 Limitations
 ===========
