@@ -51,3 +51,15 @@ Repo can inherit others. For instance, the following file inherits *click* and a
     parent=click
     url=https://github.com/kohler/click.git
     configure=./configure --disable-linuxmodule --enable-userlevel --enable-user-multithread --enable-etherswitch --enable-bound-port-transfer --disable-dynamic-linking --enable-local --enable-ip6
+Command-Line Repository Syntax
+------------------------------
+
+When specifying a repository on the command line (e.g. as an argument to `npf-run` or `npf-regress`), you can use the following syntax to override the version, target a specific role, or change the display title:
+
+``repo[%version][@role][:Title]``
+
+* ``%version`` allows you to override the branch, tag, or commit to build (e.g. ``click%master``).
+* ``@role`` forces NPF to only build and deploy the repository on the nodes assigned to a specific role (e.g. ``iperf2@server``). This skips sending and building the package on other machines.
+* ``:Title`` overrides the human-readable title of the repository for graphs and output logs (e.g. ``iperf2:My Custom IPerf``).
+
+You can combine these as well: ``iperf2%2.0.9@client:Old Iperf``
