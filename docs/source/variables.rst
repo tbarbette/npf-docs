@@ -42,8 +42,13 @@ The following are advanced variables, if you're beginning in NPF, stick with the
 Tags
 ====
 
-Variables can be omitted or included based on a tag, given by a ``repo`` or the ``--tags tag [tag ...]`` argument.
+Variables can be omitted or included based on one or more tags, given by a ``repo`` or the ``--tags tag [tag ...]`` argument.
 These variables are prefixed in the ``%variables`` section with a tag and a colon.
+
+Multiple tags can be combined using commas, acting as a logical AND (all specified tags must be active):
+
+``tune,php:PHP_FCGI_CHILDREN=16``
+    Only set ``$PHP_FCGI_CHILDREN`` when both the ``tune`` and ``php`` tags are active.
 
 For instance:
 
@@ -52,6 +57,11 @@ For instance:
 
 ``cpu:CPU=1``
     When the ``cpu`` tag is given, ``$CPU`` takes the value 1. Otherwise, ``$CPU`` is omitted.
+
+Negated tags are also supported by prefixing the tag name with a minus ``-`` sign:
+
+``-nostat:results_expect+={TOTAL-cycles}``
+    Expect ``TOTAL-cycles`` only when the ``nostat`` tag is not given.
 
 This allows to do more expanded tests to grid-search some value, but do not include that in regression test.
 

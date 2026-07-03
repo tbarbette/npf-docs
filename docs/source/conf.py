@@ -43,6 +43,7 @@ sphinx_tabs_valid_builders = ['linkcheck']
 # -- Options for HTML output
 
 html_theme = 'sphinx_rtd_theme'
+html_logo = '_static/logo.png'
 
 # -- Options for EPUB output
 epub_show_urls = 'footnote'
