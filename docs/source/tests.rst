@@ -1,13 +1,13 @@
 .. _tests:
 
-*************************
-Writing a NPF test script
-*************************
+**************************
+Writing an NPF test script
+*************************$
 
 Sections
 ========
 
-A NPF test script is made of sections. There are several types of sections.
+An NPF test script is made of sections. There are several types of sections.
 In a test script, a section starts with a header identified by a ``%`` sign prefixing its type name.
 For instance ``%info`` is starts an info section.
 A section can take arguments, separated by spaces and following its type name.
