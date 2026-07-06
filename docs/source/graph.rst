@@ -112,7 +112,7 @@ Data transformation
 - **var_divider**, {'result':1} Divide the variables or results by the given value.
 - **graph_map** ={regex:value} Replace a value matching a regex by another. Useful with text results. It is a reduced of what the `perf-class <https://pypi.org/project/perf-class/>`_ project proposes.
 - **graph_series_prop** =true/false Divide all results by the results of the first serie. Hence graphs will be a percentage of relative to the first series. Eg if the first serie is "software 1" it will be removed from the graph and the other series will show how much better software 2, ... did against software 1. Alternative value : =integer, e.g. =100 shortcut to multiply the result by the given value to have a proportion in, e.g. percents.
-- **graph_cross_reference**, {Y:VARIABLE}, change the graph where the Y axis is Y (the result name) to have the X variable being another variable
+- **graph_cross_reference**, {Y:VARIABLE}, change the graph where the Y axis is Y (the result name) to have the X variable being another variable. Typically used to replace a generator rate on the X axis by the actual throughput.
 - **var_aggregate**, {VARIABLE:method}, aggregates all values for a given variable. If "method" is "all", all results will be put in a single variable value like if they were all points for the same run. You can also use "median", "average", ... to combine results for all variables using those mathematical methods. See :ref:`aggregate` for an example.
   
 
