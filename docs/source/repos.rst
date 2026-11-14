@@ -9,7 +9,7 @@ to fetch and install a specific program, using one of the following ways :
                   
 *  **git** : Use git to download and compile a branch or specific commit
 *  **get** : Download a file and compile/install it if needed           
-*  **package** : Use the OS package manager (only Red-Hat and Debian based supported for now) (TODO : Still not implemented)   
+*  **package** : The repository is a package of the system, installed with its package manager (Debian-based and Red Hat-based systems). See `System packages`_.
   
 The *git* method supports the "history" parameter, allowing to go back in commit history to rebuild the history with older versions (commits). *get* and *package* have a hardcoded version in the repo file.
 The default method is *git*.          
@@ -39,8 +39,38 @@ This is the example file to download and build click:
 * `make` is the command to launch the build process *per se*. By default it is "make" if omitted, but can be left empty to pass the bulding phase.
 * `tags` will automatically enable some tags when using this repository.
 * `version` (only for the get method) allows to define a version to tager. $VERSION can be used in the `url`.
+* `packages` lists the system packages the repository needs, see `System packages`_.
 
 Tags can be used to activate some optional lines as in *variables* sections.
+
+System packages
+===============
+
+A repository can list the system packages it needs to build, separated by commas or spaces.
+A name that differs between Debian-based and Red Hat-based systems is prefixed with ``deb:`` or ``rpm:``.
+For instance, snort needs libdumbnet:
+
+.. code-block:: bash
+
+    name=Snort
+    method=get
+    packages=deb:libdumbnet-dev,rpm:libdnet-devel
+
+Before building the repository, NPF checks the packages with ``dpkg-query`` or ``rpm`` on the node that builds it: locally, or on each node with ``--remote-build``.
+When some are missing, NPF prints the command that installs them.
+With ``--install-packages``, it installs them itself, with ``sudo`` and ``apt-get`` or ``dnf``.
+As a library installed from source is missing for the package manager, a missing package is only a warning, and NPF still tries to build.
+
+With ``method=package``, the repository is the package itself, and a missing package stops the test.
+``packages`` defaults to the name of the repository, and ``bin_folder`` to ``/usr/bin``. For instance, ``repo/iperf3.repo``:
+
+.. code-block:: bash
+
+    name=iperf3
+    method=package
+    bin_name=iperf3
+
+The version of such a repository is the ``version`` given in the repo file, if any.
 
 
 Repo can inherit others. For instance, the following file inherits *click* and add an option to the configure line to enable IPv6:
