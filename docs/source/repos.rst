@@ -51,6 +51,7 @@ Repo can inherit others. For instance, the following file inherits *click* and a
     parent=click
     url=https://github.com/kohler/click.git
     configure=./configure --disable-linuxmodule --enable-userlevel --enable-user-multithread --enable-etherswitch --enable-bound-port-transfer --disable-dynamic-linking --enable-local --enable-ip6
+
 Command-Line Repository Syntax
 ------------------------------
 

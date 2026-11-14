@@ -2,7 +2,7 @@
 
 **************************
 Writing an NPF test script
-*************************$
+**************************
 
 Sections
 ========
@@ -23,7 +23,11 @@ A section can take arguments, separated by spaces and following its type name.
 ``%script``
     Bash commands to execute for the test. Can be defined to run with a specific role when appended with ``@rolename``.
 ``%init``
-    Special script run once before all other scripts.
+    Script run once, before the first run of the test.
+``%exit``
+    Script run at the end of each run, once its ``%script`` sections finished. Its ``RESULT`` lines are added to the results of the run.
+``%cleanup``
+    Script run once, after the last run of the test, if the ``%init`` scripts ran. It undoes what ``%init`` set up.
 ``%import``
     Import another test script and optionally under a given role when appended with ``@rolename``. 
     NPF comes with *modules* test scripts intended for importation. They usually do specific tasks that can be re-used such as setting the CPU frequency.
@@ -34,7 +38,7 @@ A section can take arguments, separated by spaces and following its type name.
 ``%require``
     Determines whether the test can run. NPF runs a test when all lines of the section returns a zero return code.
 ``%pyexit``
-    A Python script executed after the test. It can change and interpret its results.
+    A Python script executed at the end of each run, after ``%exit``. It can change and interpret the results of the run.
 ``%file``
     Creates a file with the filename given as first argument. The content of the file is the section content.
 
@@ -90,6 +94,85 @@ files as described in section :ref:`cluster` or by using the command line argume
 This example also specifies additional arguments.
 The first script starts 5 seconds after the test execution has begun (``delay=5``), and its completion does not halt the test execution (``autokill=false``). 
 The second script is executed when the ``finished`` event is reached (``waitfor=finished``) and with elevated priviledges (``sudo=true``).
+
+.. _lifecycle:
+
+Life cycle of a test
+~~~~~~~~~~~~~~~~~~~~
+
+NPF executes the sections of a test script in this order:
+
+#. The ``%init`` sections run once, before the first run. If one of them fails, NPF aborts.
+#. Then, for each combination of variables, and for each of the ``n_runs`` runs of a combination:
+
+   #. the ``%file`` sections are written,
+   #. all the ``%script`` sections start in parallel, on the nodes of their role.
+      A script with ``waitfor=EVENT`` first waits until another script prints ``EVENT EVENT``,
+      then a script with ``delay=N`` waits N more seconds,
+   #. when the last instance of a script with ``autokill=true`` (the default) finishes, NPF stops the other scripts of the run.
+      It sends them a Ctrl-C, reads what they print until they exit, and kills what is left of them after ``hardkill``
+      milliseconds (5000 by default). The run goes on once all their processes are gone (scripts that run on the
+      local machine are killed at once),
+   #. the ``%exit`` sections run, and their ``RESULT`` lines are added to the results of the run,
+   #. the ``%pyexit`` sections can change the results of the run.
+
+#. The ``%cleanup`` sections run once, after the last run, if the ``%init`` sections ran.
+
+``%init``, ``%exit`` and ``%cleanup`` take the same arguments as ``%script``, such as a role or ``sudo=true``.
+The ``RESULT`` lines of ``%init`` and ``%cleanup`` are ignored.
+
+For instance, this test script measures the throughput of iperf2 between a client and a server, with 1 and 4 parallel connections:
+
+.. code-block:: bash
+
+    %variables
+    PARALLEL={1,4}
+
+    %init@server sudo=true
+    sysctl -w net.ipv4.tcp_congestion_control=bbr
+
+    %script@server
+    echo "EVENT SERVER_READY"
+    iperf -s
+
+    %script@client waitfor=SERVER_READY delay=1
+    iperf -c ${server:0:ip} -P $PARALLEL -t 5 -y C | tail -n 1 | awk -F, '{print "RESULT-THROUGHPUT", $9}'
+
+    %exit@server sudo=true
+    ip tcp_metrics flush all
+
+    %cleanup@server sudo=true
+    sysctl -w net.ipv4.tcp_congestion_control=cubic
+
+The server prints its event just before iperf listens, so the client waits one more second (``delay=1``) before connecting.
+When the client finishes, NPF stops the server with a Ctrl-C, as both scripts have the default ``autokill=true``.
+The ``%exit`` section flushes the TCP metrics cached by the kernel, so that each run starts afresh,
+while ``%init`` and ``%cleanup`` change the congestion control only once for the whole test.
+
+.. mermaid::
+
+    sequenceDiagram
+        participant N as NPF
+        participant S as server
+        participant C as client
+        N->>S: %init@server (once)
+        loop For each combination of variables, n_runs times
+            par Scripts start in parallel
+                N->>S: %script@server
+            and
+                N->>C: %script@client
+                Note over C: waitfor=SERVER_READY
+            end
+            S-->>N: EVENT SERVER_READY
+            N-->>C: SERVER_READY
+            Note over C: delay=1, waits 1 second
+            C->>S: iperf -c, for 5 seconds
+            C-->>N: RESULT-THROUGHPUT, then exits
+            N->>S: Ctrl-C (autokill), waits until the server exited
+            N->>S: %exit@server
+            Note over N: %pyexit
+        end
+        N->>S: %cleanup@server (once)
 
 Handling multiple results
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -265,6 +348,11 @@ All graph-related configuration options are described in the :ref:`graphs page<g
     Half the most abnormal runs will be rejected to have a most common value average.
 ``required_tags=``
     Comma-separated list of tags required to run the test
+``timeout=30``
+    Seconds after which the scripts of a run are stopped
+``hardkill=5000``
+    Milliseconds a stopped script has to exit, e.g. to print its results, before NPF kills what is left of it.
+    A script can have its own, e.g. ``%script hardkill=10000``
 
 
 Include
@@ -415,18 +503,18 @@ Multiple constants can be used in the files and scripts sections:
     Path to the build folder of NPF (by default $NPF_ROOT/build, can be overriden with ``--build-path``)
 ``NPF_REPO``
     Path to the repository under test. If you don't use a repository, it will be the cwdir of the executable.
-``NPF_TESTSCRIPT_PATH``
+``NPF_SCRIPT_PATH``
     Path to the folder containing the test script
 ``NPF_RESULT_PATH``
     Path to the result folder (by default ``results/repo/version/``, or as overwritten by `--result-path`` option)
 ``NPF_OUTPUT_PATH``
     Path to the output folder (by default the same as the result result, unless given with `--output-filename`)
 ``NPF_NODE_ID``
-    Index of the node used for the same role, in general 1
+    Index of the node among the nodes of the same role, starting at 0
 ``NPF_NODE_MAX``
     Number of nodes running the same role, in general 1
 ``NPF_MULTI_ID``
-    Index of the script when running multiple times the same script on each node using the "multi" feature (see :ref:`cluster`) to run multiple time the same script on each role (see :ref:`multi`), in general 1
+    Index of the script when running multiple times the same script on each node using the "multi" feature (see :ref:`cluster`) to run multiple time the same script on each role (see :ref:`multi`). It is 0 when the multi feature is not used, otherwise from 1 to ``NPF_MULTI_MAX``
 ``NPF_MULTI_MAX``
     Number of multi as given to the cluster config (default is 1)
 
