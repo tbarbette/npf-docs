@@ -62,7 +62,7 @@ With ``--install-packages``, it installs them itself, with ``sudo`` and ``apt-ge
 As a library installed from source is missing for the package manager, a missing package is only a warning, and NPF still tries to build.
 
 With ``method=package``, the repository is the package itself, and a missing package stops the test.
-``packages`` defaults to the name of the repository, and ``bin_folder`` to ``/usr/bin``. For instance, ``repo/iperf3.repo``:
+``packages`` defaults to the name of the repository, and ``bin_folder`` to ``/usr/bin``. For instance, to use the iperf3 of the system, write a ``repo/iperf3.repo`` with:
 
 .. code-block:: bash
 
