@@ -48,7 +48,7 @@ This draws one CDF per value of ``X``, each made of 20 points.
 With a single series, as here, each value of the variable has its color, and the legend is titled with the variable.
 With several series, each series has its color and each value of the variable its line style.
 
-.. image:: https://github.com/tbarbette/npf/raw/main/doc/cdf-N.png
+.. image:: /_static/cdf-N.png
    :alt: CDF of N for each value of X
    :width: 500
 
