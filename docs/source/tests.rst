@@ -109,7 +109,10 @@ NPF executes the sections of a test script in this order:
    #. all the ``%script`` sections start in parallel, on the nodes of their role.
       A script with ``waitfor=EVENT`` first waits until another script prints ``EVENT EVENT``,
       then a script with ``delay=N`` waits N more seconds,
-   #. when the last instance of a script with ``autokill=true`` (the default) finishes, NPF kills the other scripts of the run,
+   #. when the last instance of a script with ``autokill=true`` (the default) finishes, NPF stops the other scripts of the run.
+      It sends them a Ctrl-C, reads what they print until they exit, and kills what is left of them after ``hardkill``
+      milliseconds (5000 by default). The run goes on once all their processes are gone (scripts that run on the
+      local machine are killed at once),
    #. the ``%exit`` sections run, and their ``RESULT`` lines are added to the results of the run,
    #. the ``%pyexit`` sections can change the results of the run.
 
@@ -142,7 +145,7 @@ For instance, this test script measures the throughput of iperf2 between a clien
     sysctl -w net.ipv4.tcp_congestion_control=cubic
 
 The server prints its event just before iperf listens, so the client waits one more second (``delay=1``) before connecting.
-When the client finishes, NPF kills the server, as both scripts have the default ``autokill=true``.
+When the client finishes, NPF stops the server with a Ctrl-C, as both scripts have the default ``autokill=true``.
 The ``%exit`` section flushes the TCP metrics cached by the kernel, so that each run starts afresh,
 while ``%init`` and ``%cleanup`` change the congestion control only once for the whole test.
 
@@ -165,7 +168,7 @@ while ``%init`` and ``%cleanup`` change the congestion control only once for the
             Note over C: delay=1, waits 1 second
             C->>S: iperf -c, for 5 seconds
             C-->>N: RESULT-THROUGHPUT, then exits
-            N->>S: kills the server (autokill)
+            N->>S: Ctrl-C (autokill), waits until the server exited
             N->>S: %exit@server
             Note over N: %pyexit
         end
@@ -345,6 +348,11 @@ All graph-related configuration options are described in the :ref:`graphs page<g
     Half the most abnormal runs will be rejected to have a most common value average.
 ``required_tags=``
     Comma-separated list of tags required to run the test
+``timeout=30``
+    Seconds after which the scripts of a run are stopped
+``hardkill=5000``
+    Milliseconds a stopped script has to exit, e.g. to print its results, before NPF kills what is left of it.
+    A script can have its own, e.g. ``%script hardkill=10000``
 
 
 Include
