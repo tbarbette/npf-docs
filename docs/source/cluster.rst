@@ -14,10 +14,13 @@ For simple test case `--cluster client=user@server` argument is enough to config
 
 Note : all communication is done through SSH. You should have passwordless connection set up using SSH keys.
 
-3 global parameters are supported :
+Global parameters :
   * `addr=full_address_of_node` //if unset, the node name is used
   * `path=path/to/npf`
   * `user=user_for_ssh_connection`
+  * `port=ssh_port` and `identityfile=path/to/ssh/key`
+  * `nfs=0` when the folder of the experiment is not shared with the node (see below)
+  * `env=KEY=VALUE`, one line per variable: environment variables for the builds on that node, e.g. with `--remote-build`, `env=PKG_CONFIG_PATH=/path/to/the/dpdk/of/that/node/lib/x86_64-linux-gnu/pkgconfig`. `$KEY` and `${KEY}` of the lines above are replaced.
 
 For instance, using `--cluster client=user01@server01.network.edu` is the same than using `--cluster client=server01` with the following `server01.node` file:
 
@@ -29,7 +32,7 @@ For instance, using `--cluster client=user01@server01.network.edu` is the same t
 
 Syncing NPF folder across your cluster improves performance as it avoids "rsyncing"
 dependencies and scripts for each tests. One suggested option
-is to use a NFS share, another possibility is to run sshfs on each node. If this is not possible for you, add the `nfs=0` global parameter in the repo file.
+is to use a NFS share, another possibility is to run sshfs on each node. If this is not possible for you, add the `nfs=0` global parameter in the node file.
 
 Test files can use special variables like `${role:0:ip}` to be replaced by the node's ip that run the given role. Allowed types such as ip are defined below.
 Currently NPF does not support reading NIC's IP or MAC address neither ensuring a specific NIC order. By default, each node has 32 randomly generated NICs with reference 0 to 31, using ifname eth%d, random MAC address and a 10.0.0.0/8 random IP address.

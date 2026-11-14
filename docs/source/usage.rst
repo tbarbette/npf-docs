@@ -94,13 +94,24 @@ Instead, the values from the cache will be used.
 This is convenient when you try many variables and then restrict some of them to get a simpler graph, without re-executing the actual test.
 Note that if some results are missing (for example, if you added more metrics since the last run, or if there are less points in the cache than the number of runs requested), NPF will still launch the test to complete the missing points.
 
-Limitations
-===========
+Keeping track of what a test did
+================================
 
-There are known limitations for which solutions will be brought to NPF.
+``--debug``
+    prints when each script starts, is stopped and ends, and with which exit code.
 
-Local build only
-----------------
-Software described in ``.repo`` files are built locally.
-When NFS or sshfs is not used, NPF copies binaries locally built to each computer of the cluster when running the test. 
-Issue `#5 <https://github.com/tbarbette/npf/issues/5>`_ tracks this limitation.
+``--preserve-temporaries``
+    keeps the folder in which NPF ran the test, with the files of the test.
+    It also holds the output of each script in ``<name>.stdout`` and ``<name>.stderr``, e.g. ``dut_0.stdout`` for the first script of the ``dut`` role.
+    The output of each run follows a line that tells the variables of the run and its repetition, the node, how the script ended (its exit code, stopped by NPF at the end of the run, timeout...) and how long it ran.
+    With ``--preserve-temporaries=folder``, the test folder is moved to ``folder``, which can contain variables.
+
+The graphs
+    The PDF file of each graph holds what is needed to draw it again: the command line and the folder it ran from, the versions of NPF and of the series, the test scripts, and the results as CSV. ``pdfinfo -custom graph.pdf`` shows them.
+
+Building on the nodes
+=====================
+
+By default, software described in ``.repo`` files is built locally.
+When the folder of the experiment is not shared with a node (``nfs=0`` in its cluster file), NPF copies the build folder to it.
+With ``--remote-build``, each node builds the software itself, against its own libraries: a node file can give these builds variables with ``env=`` lines, e.g. ``env=PKG_CONFIG_PATH=...`` for the DPDK of that node (see :ref:`cluster`).
