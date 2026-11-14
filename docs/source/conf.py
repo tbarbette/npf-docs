@@ -28,6 +28,7 @@ extensions = [
     'sphinx_tabs.tabs',
     'sphinx_toolbox.collapse',
     'myst_nb', # parses markdown (.md) and notebooks (.ipynb)
+    'sphinxcontrib.mermaid', # diagrams, e.g. the life cycle of a test
 ]
 
 intersphinx_mapping = {

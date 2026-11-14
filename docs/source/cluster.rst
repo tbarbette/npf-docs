@@ -34,7 +34,7 @@ is to use a NFS share, another possibility is to run sshfs on each node. If this
 Test files can use special variables like `${role:0:ip}` to be replaced by the node's ip that run the given role. Allowed types such as ip are defined below.
 Currently NPF does not support reading NIC's IP or MAC address neither ensuring a specific NIC order. By default, each node has 32 randomly generated NICs with reference 0 to 31, using ifname eth%d, random MAC address and a 10.0.0.0/8 random IP address.
 
-Most testie reference the NIC 0 as the first dataplane NIC to run the test. Therefore you should set your data plane NICs as the first ones, reading testies %info section to understand topology specifics.
+Most test scripts reference the NIC 0 as the first dataplane NIC to run the test. Therefore you should set your data plane NICs as the first ones, reading the %info section of test scripts to understand topology specifics.
 
 NICs parameters are defined in the format N:type where N is a NIC reference number,
 and type is one of the following :
