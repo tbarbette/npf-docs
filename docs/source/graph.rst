@@ -26,6 +26,41 @@ If there are 2 dynamic variables, but only a single serie (i.e. you used npf-com
 
 One can force the graph type with the "graph_type" config option. For instance, if you pass `\-\-config graph_type=boxplot` to the command line, you will get a box plot no matter the number of dynamic variables.
 
+CDF
+===
+
+With ``graph_type=cdf``, NPF draws the cumulative distribution function (CDF) of each result: for each value of the variable and each series, the share of the observed results that are at most a given value.
+By default, the observed results are the ones of the runs (``n_runs``):
+
+.. code-block:: bash
+
+    %config
+    n_runs=20
+    graph_type=cdf
+
+    %variables
+    X=[1-5]
+
+    %script python-inline
+    echo "RESULT-N $(( $X * rand() % 100 ))"
+
+This draws one CDF per value of ``X``, each made of 20 points.
+With a single series, as here, each value of the variable has its color, and the legend is titled with the variable.
+With several series, each series has its color and each value of the variable its line style.
+
+.. image:: https://github.com/tbarbette/npf/raw/main/doc/cdf-N.png
+   :alt: CDF of N for each value of X
+   :width: 500
+
+The test script is `integration/cdf.npf <https://github.com/tbarbette/npf/blob/main/integration/cdf.npf>`_.
+
+More points per run
+    A script can print the same result several times, e.g. one latency per packet. By default, NPF keeps the last value. With ``result_append={N}`` in the ``%config`` section, it keeps all of them, so each value becomes a point of the CDF (see :ref:`tests`, *Handling multiple results*).
+
+Variables that are only noise
+    To show how much a result varies over conditions that do not matter individually, for instance with ``LOSS=[0-10]``, run them all and merge them into a single CDF with ``var_aggregate={LOSS:all}``, or ``var_aggregate={LOSS+DELAY:all}`` for several variables (see the *Data transformation* options below).
+    NPF reminds it when a CDF graph has more than 4 lines.
+
 
 Graphing options
 ================
