@@ -36,7 +36,7 @@ A section can take arguments, separated by spaces and following its type name.
 ``%sendfile``
     Send a file that lies with the test script to the remote machine. The source path of the file is given as first argument. The destination path is the test execution directory.
 ``%require``
-    Determines whether the test can run. NPF runs a test when all lines of the section returns a zero return code.
+    A script that determines whether a run can happen. NPF runs it before each run, and skips the run if it does not exit with 0.
 ``%pyexit``
     A Python script executed at the end of each run, after ``%exit``. It can change and interpret the results of the run.
 ``%file``
@@ -410,6 +410,38 @@ Modules reside in the ``modules`` folder.
     %import@server clock   
 
 In this example, a ``clock.npf`` module is defined and imported for the ``server`` and ``client`` roles.
+
+Require
+-------
+
+The ``%require`` section is a bash script that NPF runs before each run, with the variables of the run.
+If it does not exit with 0, NPF skips the run, and prints "Requirement not met" with the output of the script.
+As in any bash script, the exit status is the one of the last command, or of ``exit``: join several conditions with ``&&``.
+
+.. code-block:: bash
+
+    %variables
+    THREADS=[1-16]
+
+    %require
+    test $THREADS -le $(nproc)
+
+Minimum version of NPF
+~~~~~~~~~~~~~~~~~~~~~~
+
+A test script that uses a recent feature of NPF can check the version of NPF that runs it, in ``${NPF_VERSION}``:
+
+.. code-block:: bash
+
+    %require
+    version() { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1, $2, $3, $4); }'; }
+    if [ $(version ${NPF_VERSION}) -lt $(version 2.1.0) ] ; then
+        echo "This test script needs NPF 2.1.0 or newer, this is NPF ${NPF_VERSION}"
+        exit 1
+    fi
+
+Older versions of NPF give ``${NPF_VERSION}`` to ``%require`` only when the test script has ``%late_variables``.
+Otherwise it is empty, which this check also treats as too old.
 
 pyexit
 ------
