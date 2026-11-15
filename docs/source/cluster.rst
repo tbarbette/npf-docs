@@ -20,7 +20,14 @@ Global parameters :
   * `user=user_for_ssh_connection`
   * `port=ssh_port` and `identityfile=path/to/ssh/key`
   * `nfs=0` when the folder of the experiment is not shared with the node (see below)
+  * `arch=` and `tags=` are accepted, but not used
   * `env=KEY=VALUE`, one line per variable: environment variables for the builds on that node, e.g. with `--remote-build`, `env=PKG_CONFIG_PATH=/path/to/the/dpdk/of/that/node/lib/x86_64-linux-gnu/pkgconfig`. `$KEY` and `${KEY}` of the lines above are replaced.
+
+The `--cluster` argument can also give some options after the node, separated by commas: `--cluster role=node,option=value,...`:
+
+  * `nfs=0` and `path=path/to/npf`, as in a node file
+  * `nic=1+0` changes the order of the NICs: here the NIC 0 of the scripts is the NIC 1 of the node file, and the NIC 1 is the NIC 0
+  * `multi=N` and `mode=netns`, see :ref:`multi`
 
 For instance, using `--cluster client=user01@server01.network.edu` is the same than using `--cluster client=server01` with the following `server01.node` file:
 
@@ -46,6 +53,11 @@ and type is one of the following :
   * `mac=ma:ca:dd:rr:es:s_`
   * `pci=0000:00:00.0`
   * `ip=static_address`
+  * `ip6=static_ipv6_address`
+  * `mask=255.255.255.0`, the netmask of the address (this is the default)
+  * `driver=driver_name`, which scripts cannot read
+
+Scripts read them with `${role:N:type}`, e.g. `${server:0:ip}`, and `${role:N:raw_mac}` gives the MAC address without colons.
 
 For tests using the standard networking stack, setting the `ip` and the `ifname` is enough, so each script can reference other node's IP address and use ifconfig tools using the ifname.
 

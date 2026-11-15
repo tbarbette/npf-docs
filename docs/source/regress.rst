@@ -25,6 +25,25 @@ You can use it similarly to the standard ``npf`` command, but with additional op
 * ``--regress-version <version1> <version2> ...``: Compare explicitly against multiple specific old versions.
 * ``--branch <branch>``: Compare against a specific branch.
 * ``--allow-old-build``: Allows NPF to rebuild and run tests for old versions if the results are not cached.
+* ``--force-old-build``: With ``--allow-old-build``, rebuild the old versions even when they are built.
+* ``--regress``: Compare the results against the old versions, and tell about the regressions.
+* ``--regress-history N`` (or ``--graph-num``): Number of old versions to graph after ``--compare-version``. By default 0, or 8 with ``--regress``.
+
+All the options of ``npf-regress`` are listed in :ref:`usage`.
+
+**When a version is a regression:**
+
+For each combination of variables, NPF compares the mean of the results of the new version with the one of the old version, after removing the outliers.
+These ``%config`` options set the accepted difference:
+
+``acceptable=0.01``
+    Accepted relative difference between the means: 0.01 is 1%.
+``accept_variance=1``
+    Also accept the standard deviation of the new results, times this factor, divided by their mean.
+``accept_outliers_mult=1``
+    The results further than this many standard deviations from the mean are outliers. ``--graph-reject-outliers`` also removes them from the graphs.
+``n_supplementary_runs=3``
+    When a combination is not accepted, NPF runs it this many more times, and compares again.
 
 **Comparing Specific Versions:**
 
@@ -50,7 +69,9 @@ This tool runs in a loop, watching for new commits in a given list of repositori
 * ``--interval <secs>``: The interval in seconds between repository polls (default is 60).
 * ``--mail-to <email>``: A list of email addresses to send the report to.
 * ``--mail-from <email>``: The sender email address.
-* ``--mail-erroronly``: If set, an email will only be sent when a test fails or performance regressions are detected (the default behavior).
+* ``--mail-erroronly``: If set, an email will only be sent when a test fails or performance regressions are detected. By default, an email is sent after each test.
+* ``--history N``: Consider the last N commits as not tested yet (default is 1).
+* ``--mail-smtp <address>``: The SMTP server (default is localhost).
 * ``--onerun``: Perform only one loop of regression testing instead of running continuously. Useful for CI/CD pipelines.
 
 When an email is sent, it includes an HTML body detailing the passed and failed constraints alongside inline images of the performance graphs.

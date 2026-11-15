@@ -34,13 +34,17 @@ A section can take arguments, separated by spaces and following its type name.
 ``%include``
     A test script to be included inline. It can be used to organise a test script in multiple files.
 ``%sendfile``
-    Send a file that lies with the test script to the remote machine. The source path of the file is given as first argument. The destination path is the test execution directory.
+    Send a file that lies with the test script to the remote machine. The source path of the file is given as first argument. The destination path is the test execution directory. ``%sendfile@role`` sends it to the nodes of that role.
 ``%require``
     A script that determines whether a run can happen. NPF runs it before each run, and skips the run if it does not exit with 0.
 ``%pyexit``
     A Python script executed at the end of each run, after ``%exit``. It can change and interpret the results of the run.
 ``%file``
-    Creates a file with the filename given as first argument. The content of the file is the section content.
+    Creates a file with the filename given as first argument. The content of the file is the section content, with the variables replaced, unless ``noparse`` follows the filename (``%file config.txt noparse``). ``%file@role`` creates it for the nodes of that role.
+``%init-file``
+    Same as ``%file``, but for the ``%init`` and ``%cleanup`` scripts. Its variables are the static ones.
+``%pypost``
+    A Python script executed once all the runs are done, on all the results, before the graphs and outputs. See `pypost`_.
 
 The following subsections describes NPF script sections in more details.
 
@@ -94,6 +98,33 @@ files as described in section :ref:`cluster` or by using the command line argume
 This example also specifies additional arguments.
 The first script starts 5 seconds after the test execution has begun (``delay=5``), and its completion does not halt the test execution (``autokill=false``). 
 The second script is executed when the ``finished`` event is reached (``waitfor=finished``) and with elevated priviledges (``sudo=true``).
+
+All the parameters of a script section:
+
+``name=NAME``
+    Name of the script in NPF's messages, and in the output files of ``--preserve-temporaries``.
+``sudo=true``
+    Run the script with sudo.
+``delay=SECONDS``
+    Start the script this many seconds after the start of the run, or after its ``waitfor`` event.
+``waitfor=EVENT``
+    Start the script when another script prints ``EVENT EVENT`` (see :ref:`lifecycle`).
+``deps=REPO[,REPO...]``
+    Repositories the script needs: NPF builds them, and adds their binaries to the ``PATH`` of the script.
+``timeout=SECONDS``
+    Stop the script after this time. Default: ``timeout`` of ``%config``, 30.
+``autokill=false``
+    When this script ends, do not stop the other scripts of the run. Default: ``autokill`` of ``%config``, true.
+``nokill=true``
+    At the end of the run, do not stop this script, but let it end by itself. Default: ``nokill`` of ``%config``, false.
+``hardkill=MILLISECONDS``
+    Time a stopped script has to exit before NPF kills it. Default: ``hardkill`` of ``%config``, 5000.
+``critical=true``
+    When this script fails, stop the test. Default: ``critical`` of ``%config``, false.
+``jinja``, ``python-inline``
+    How NPF replaces the variables in the script, see :ref:`jinja`. They come before the other parameters.
+
+``%script@role-*`` runs the script several times on each node of the role, as many as the ``multi`` of the node, and ``%script@role-N`` only its N-th instance (see :ref:`multi`).
 
 .. _lifecycle:
 
@@ -337,22 +368,54 @@ Config
 ------
 
 The ``%config`` section contains configuration options, both related to the execution of the test and the graphs format.
-All graph-related configuration options are described in the :ref:`graphs page<graph>`.
+They can also be given on the command line, with ``--config option=value``.
+A list is written ``{A,B}``, and a dictionary ``{KEY:VALUE,KEY2:VALUE2}``.
+The graph options are described in the :ref:`graphs page<graph>`, and the regression options in :ref:`regress`.
 
-``acceptable=0.01``
-    Acceptable difference between multiple regression runs 
-``n_runs=1``
-    Number of runs to do of each test
-``unacceptable_n_runs=0``
-    Number of runs to do when the value is first rejected (to avoid false positives). 
-    Half the most abnormal runs will be rejected to have a most common value average.
-``required_tags=``
-    Comma-separated list of tags required to run the test
-``timeout=30``
-    Seconds after which the scripts of a run are stopped
-``hardkill=5000``
-    Milliseconds a stopped script has to exit, e.g. to print its results, before NPF kills what is left of it.
-    A script can have its own, e.g. ``%script hardkill=10000``
+Runs
+    ``n_runs=3``
+        Number of runs of each combination of variables.
+    ``n_retry=0``
+        Number of times a run is retried when it fails, for instance when a script does not give its results.
+    ``timeout=30``
+        Seconds after which the scripts of a run are stopped. A script can have its own, e.g. ``%script timeout=60``.
+    ``hardkill=5000``
+        Milliseconds a stopped script has to exit, e.g. to print its results, before NPF kills what is left of it.
+        A script can have its own, e.g. ``%script hardkill=10000``.
+    ``autokill=true``
+        When a script ends, NPF stops the other scripts of the run. ``%script autokill=false`` changes it for one script.
+    ``nokill=false``
+        With ``true``, NPF does not stop the scripts at the end of the run, but lets them end by themselves.
+    ``critical=false``
+        With ``true``, NPF stops the whole test when a script fails.
+    ``require_tags={}``
+        Tags the test needs: without them, NPF skips the test.
+
+Results
+    ``result_regex``
+        Regular expressions that find the results in the output of the scripts. The default one finds the ``RESULT`` lines described above.
+    ``results_expect={}``
+        Result types that each run must give: a run without one of them failed.
+    ``accept_zero={time,DROP,DROPPED,DROPPEDPC,LOST}``
+        Result types that can be 0. NPF ignores the other results that are 0, as errors.
+    ``result_add``, ``result_append``, ``result_overwrite``
+        When a script gives the same result several times: add the values, keep them all, or keep the last one. See `Handling multiple results`_.
+    ``var_n_runs={}``
+        ``{RESULT:N}``: only keep the time series of ``RESULT`` for the N first runs.
+    ``time_kinds={}``
+        The time series namespaces to take from the cache. By default, all of them.
+    ``time_precision``, ``time_sync``, ``glob_sync``
+        See `Time series`_.
+
+Roles and repositories
+    ``default_role_map={}``
+        ``{ROLE:OTHER}``: a role that ``--cluster`` does not give runs where ``OTHER`` runs. Modules use it to run on the node of another role by default, e.g. ``{dut:client}``.
+    ``role_exclude={}``
+        ``{A+B}``: roles that must not run on the same node. NPF stops when they would.
+    ``default_repo=local``
+        The repository used when the command line gives none.
+
+``env`` and ``graph_mode`` are reserved: NPF does not use them.
 
 
 Include
@@ -410,6 +473,15 @@ Modules reside in the ``modules`` folder.
     %import@server clock   
 
 In this example, a ``clock.npf`` module is defined and imported for the ``server`` and ``client`` roles.
+
+The parameters of an ``%import``:
+
+``VAR=VALUE``
+    Sets a variable of the module, e.g. ``%import@client clock MAX_CLOCK=10``.
+``delay=SECONDS``, ``waitfor=EVENT``, ``autokill=``, ``nokill=``
+    Apply to all the scripts of the module, as the parameters of a ``%script``. The delay adds to the delay of each script, and the event to the events it waits for.
+``as_init``
+    Accepted, but it has no effect.
 
 Require
 -------
@@ -524,6 +596,19 @@ create a combination of all values as `THROUGHPUT-SUM`, that can then be used in
             RESULTS[k + '-SUM'] = vs[8:-1]
 
 
+pypost
+------
+
+A ``%pypost`` section is a Python script that NPF runs once all the runs are done, before the graphs and the outputs.
+NPF runs it for each series, with ``ALL_RESULTS``, the results of each run of the series, which the script can change or complete.
+``results_divide(NEW, A, B)`` adds the result ``NEW``, ``A`` divided by ``B``, to each run that has both:
+
+.. code-block:: python
+
+    %pypost
+    results_divide("BYTES_PER_PACKET", "BYTES", "PACKETS")
+
+
 NPF constants
 =============
 
@@ -540,7 +625,7 @@ Multiple constants can be used in the files and scripts sections:
 ``NPF_RESULT_PATH``
     Path to the result folder (by default ``results/repo/version/``, or as overwritten by `--result-path`` option)
 ``NPF_OUTPUT_PATH``
-    Path to the output folder (by default the same as the result result, unless given with `--output-filename`)
+    Path to the output folder (by default the same as the result result, unless given with ``--graph-filename``)
 ``NPF_NODE_ID``
     Index of the node among the nodes of the same role, starting at 0
 ``NPF_NODE_MAX``
